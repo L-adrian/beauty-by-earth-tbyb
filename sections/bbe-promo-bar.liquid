@@ -1,0 +1,72 @@
+{{- 'bbe-promo-bar.css' | asset_url | stylesheet_tag -}}
+
+{%- if section.settings.show_bar -%}
+  {%- assign bar_class = 'bbe-promo-bar' -%}
+  {%- if section.settings.color_scheme == 'light' -%}
+    {%- assign bar_class = bar_class | append: ' bbe-promo-bar--light' -%}
+  {%- endif -%}
+
+  <div
+    id="bbe-promo-bar-{{ section.id }}"
+    class="{{ bar_class }}"
+    role="region"
+    aria-label="{{ 'sections.promo_bar.aria_label' | t }}"
+  >
+    <div class="bbe-promo-bar__inner">
+      {%- if section.settings.link_url != blank -%}
+        <a
+          href="{{ section.settings.link_url }}"
+          class="bbe-promo-bar__link"
+        >
+          {{- section.settings.announcement_text | escape -}}
+        </a>
+      {%- else -%}
+        <p class="bbe-promo-bar__text">
+          {{- section.settings.announcement_text | escape -}}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.promo_bar.name",
+  "tag": "div",
+  "class": "bbe-promo-bar-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_bar",
+      "label": "t:sections.promo_bar.settings.show_bar.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "t:sections.promo_bar.settings.announcement_text.label",
+      "default": "Free shipping on orders over $50 — Shop now"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "t:sections.promo_bar.settings.link_url.label"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "t:sections.promo_bar.settings.color_scheme.label",
+      "options": [
+        { "value": "dark", "label": "t:options.dark" },
+        { "value": "light", "label": "t:options.light" }
+      ],
+      "default": "dark"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.promo_bar.name"
+    }
+  ]
+}
+{% endschema %}

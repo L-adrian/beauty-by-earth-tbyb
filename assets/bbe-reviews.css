@@ -1,0 +1,121 @@
+.bbe-reviews {
+  background-color: var(--bbe-color-white);
+  padding: var(--bbe-space-xl) 24px;
+}
+
+.bbe-reviews__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.bbe-reviews__headline {
+  font-family: var(--bbe-font-heading);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: var(--bbe-weight-regular);
+  font-style: italic;
+  color: var(--bbe-color-chocolate);
+  margin: 0 0 var(--bbe-space-md);
+}
+
+.bbe-reviews__stars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: var(--bbe-space-lg);
+}
+
+.bbe-reviews__star {
+  font-size: 22px;
+  color: #d4b5a0;
+}
+
+.bbe-reviews__star--filled {
+  color: var(--bbe-color-chocolate);
+}
+
+.bbe-reviews__carousel {
+  position: relative;
+}
+
+.bbe-reviews__track {
+  overflow: hidden;
+  position: relative;
+}
+
+.bbe-reviews__slide {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.bbe-reviews__slide.is-active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bbe-reviews__quote {
+  margin: 0 0 var(--bbe-space-md);
+}
+
+.bbe-reviews__quote p {
+  font-family: var(--bbe-font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--bbe-color-chocolate);
+  margin: 0 0 var(--bbe-space-sm);
+}
+
+.bbe-reviews__author {
+  font-family: var(--bbe-font-body);
+  font-size: 13px;
+  font-weight: var(--bbe-weight-semibold);
+  color: var(--bbe-color-rose);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bbe-reviews__author cite {
+  font-style: normal;
+}
+
+.bbe-reviews__controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--bbe-space-sm);
+  margin-top: var(--bbe-space-md);
+}
+
+.bbe-reviews__btn {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--bbe-color-chocolate);
+  background: transparent;
+  color: var(--bbe-color-chocolate);
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bbe-reviews__btn:hover {
+  background-color: var(--bbe-color-chocolate);
+  color: var(--bbe-color-white);
+}
+
+.bbe-reviews__btn:focus-visible {
+  outline: 2px solid var(--bbe-color-chocolate);
+  outline-offset: 3px;
+}
+
+@media screen and (max-width: 749px) {
+  .bbe-reviews {
+    padding: var(--bbe-space-lg) 16px;
+  }
+}

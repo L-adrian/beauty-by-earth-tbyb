@@ -1,0 +1,166 @@
+{{- 'bbe-reviews.css' | asset_url | stylesheet_tag -}}
+
+<section
+  class="bbe-reviews"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+>
+  <div class="bbe-reviews__inner">
+
+    {%- if section.settings.headline != blank -%}
+      <h2 class="bbe-reviews__headline">{{ section.settings.headline }}</h2>
+    {%- endif -%}
+
+    <div class="bbe-reviews__summary" aria-label="{{ section.settings.star_rating }} out of 5 stars">
+      <div class="bbe-reviews__stars" role="img" aria-hidden="true">
+        {%- assign fullStars = section.settings.star_rating | floor -%}
+        {%- for i in (1..5) -%}
+          <span class="bbe-reviews__star{% if i <= fullStars %} bbe-reviews__star--filled{% endif %}">★</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div
+        class="bbe-reviews__carousel"
+        role="region"
+        aria-label="Customer reviews"
+        aria-live="polite"
+      >
+        <div class="bbe-reviews__track" data-reviews-track>
+          {%- for block in section.blocks -%}
+            <article
+              class="bbe-reviews__slide"
+              data-review-slide
+              aria-hidden="{{ forloop.first | json | replace: 'true', 'false' | replace: 'false', forloop.first == false }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.quote != blank -%}
+                <blockquote class="bbe-reviews__quote">
+                  <p>{{ block.settings.quote }}</p>
+                  {%- if block.settings.author != blank -%}
+                    <footer class="bbe-reviews__author">
+                      <cite>{{ block.settings.author }}</cite>
+                    </footer>
+                  {%- endif -%}
+                </blockquote>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+
+        <div class="bbe-reviews__controls" role="group" aria-label="Review navigation">
+          <button
+            class="bbe-reviews__btn bbe-reviews__btn--prev"
+            aria-label="Previous review"
+            data-reviews-prev
+          >
+            &#8592;
+          </button>
+          <button
+            class="bbe-reviews__btn bbe-reviews__btn--next"
+            aria-label="Next review"
+            data-reviews-next
+          >
+            &#8594;
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script src="{{ 'bbe-reviews.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Reviews panel",
+  "tag": "div",
+  "class": "bbe-reviews-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Over 100K reviews (and counting)."
+    },
+    {
+      "type": "range",
+      "id": "star_rating",
+      "label": "Star rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name",
+          "default": "Happy Customer"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review quote",
+          "default": "This product completely changed my routine. I will never go back!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews panel",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "author": "Sarah M.",
+            "quote": "This deodorant is absolute gold. I've tried everything and nothing worked until this."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Jessica R.",
+            "quote": "I was skeptical but after one week I am completely converted. My skin feels amazing."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Amanda K.",
+            "quote": "Finally a natural deodorant that actually works. I tell everyone about it."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

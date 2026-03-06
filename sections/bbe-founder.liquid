@@ -1,0 +1,75 @@
+{{- 'bbe-founder.css' | asset_url | stylesheet_tag -}}
+
+<section class="bbe-founder">
+  <div class="bbe-founder__inner">
+
+    <div class="bbe-founder__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="bbe-founder__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <div class="bbe-founder__body">{{ section.settings.body }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.founder_name != blank -%}
+        <p class="bbe-founder__name">{{ section.settings.founder_name }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="bbe-founder__media">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 700
+          | image_tag:
+            width: 700,
+            alt: section.settings.image.alt | default: section.settings.founder_name,
+            loading: 'lazy',
+            class: 'bbe-founder__image'
+        }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'bbe-founder__image bbe-founder__image--placeholder' }}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Founder note",
+  "tag": "div",
+  "class": "bbe-founder-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Founder image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fresh that actually works"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>I created this formula because I was tired of choosing between products that worked and products that were good for my body. You deserve both.</p>"
+    },
+    {
+      "type": "text",
+      "id": "founder_name",
+      "label": "Founder name",
+      "default": "— Sarah, Founder"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Founder note"
+    }
+  ]
+}
+{% endschema %}

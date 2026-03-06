@@ -1,0 +1,108 @@
+.bbe-ugc-gallery {
+  padding: var(--bbe-space-xl) 0;
+  overflow: hidden;
+}
+
+.bbe-ugc-gallery__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--bbe-space-sm);
+}
+
+.bbe-ugc-gallery__viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex: 1;
+}
+
+.bbe-ugc-gallery__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.bbe-ugc-gallery__track {
+  display: flex;
+  gap: var(--bbe-space-sm);
+  list-style: none;
+  margin: 0;
+  padding: 0 24px;
+}
+
+.bbe-ugc-gallery__item {
+  flex: 0 0 auto;
+  width: 240px;
+  scroll-snap-align: start;
+}
+
+.bbe-ugc-gallery__link {
+  display: block;
+  text-decoration: none;
+}
+
+.bbe-ugc-gallery__image-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #ede5db;
+}
+
+.bbe-ugc-gallery__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.bbe-ugc-gallery__link:hover .bbe-ugc-gallery__image {
+  transform: scale(1.04);
+}
+
+.bbe-ugc-gallery__link:focus-visible {
+  outline: 2px solid var(--bbe-color-chocolate);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.bbe-ugc-gallery__arrow {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--bbe-color-chocolate);
+  background: var(--bbe-color-white);
+  color: var(--bbe-color-chocolate);
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bbe-ugc-gallery__arrow--prev { margin-left: 16px; }
+.bbe-ugc-gallery__arrow--next { margin-right: 16px; }
+
+.bbe-ugc-gallery__arrow:hover {
+  background-color: var(--bbe-color-chocolate);
+  color: var(--bbe-color-white);
+}
+
+.bbe-ugc-gallery__arrow:focus-visible {
+  outline: 2px solid var(--bbe-color-chocolate);
+  outline-offset: 3px;
+}
+
+@media screen and (max-width: 749px) {
+  .bbe-ugc-gallery__item {
+    width: 180px;
+  }
+
+  .bbe-ugc-gallery__arrow {
+    display: none;
+  }
+}

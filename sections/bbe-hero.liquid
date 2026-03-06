@@ -1,0 +1,162 @@
+{{- 'bbe-hero.css' | asset_url | stylesheet_tag -}}
+
+<section class="bbe-hero" aria-label="{{ section.settings.headline | escape }}">
+  <div class="bbe-hero__inner">
+
+    <div class="bbe-hero__content">
+      {%- if section.settings.headline != blank -%}
+        <h1 class="bbe-hero__headline">{{ section.settings.headline }}</h1>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="bbe-hero__bullets" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.text != blank -%}
+              <li class="bbe-hero__bullet" {{ block.shopify_attributes }}>
+                <span class="bbe-hero__bullet-icon" aria-hidden="true"></span>
+                {{ block.settings.text }}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="bbe-hero__actions">
+        {%- if section.settings.primary_cta_text != blank -%}
+          <a
+            href="{{ section.settings.primary_cta_url | default: '#' }}"
+            class="bbe-hero__cta bbe-hero__cta--primary"
+          >
+            {{ section.settings.primary_cta_text }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.secondary_cta_text != blank -%}
+          <a
+            href="{{ section.settings.secondary_cta_url | default: '#' }}"
+            class="bbe-hero__cta bbe-hero__cta--secondary"
+          >
+            {{ section.settings.secondary_cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="bbe-hero__media">
+      {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+        <div class="bbe-hero__badge" aria-label="{{ section.settings.badge_text }}">
+          {{ section.settings.badge_text }}
+        </div>
+      {%- endif -%}
+
+      <div class="bbe-hero__image-wrap">
+        {%- if section.settings.product_image != blank -%}
+          {{
+            section.settings.product_image
+            | image_url: width: 800
+            | image_tag:
+              width: 800,
+              height: 800,
+              alt: section.settings.product_image.alt | default: section.settings.headline,
+              loading: 'eager',
+              class: 'bbe-hero__image'
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'bbe-hero__image bbe-hero__image--placeholder' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero offer",
+  "tag": "div",
+  "class": "bbe-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Try It. Love It. Or Pay Nothing."
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_url",
+      "label": "Secondary CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "Product image"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product image"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "$0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Bullet point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Benefit goes here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero offer",
+      "blocks": [
+        { "type": "bullet", "settings": { "text": "Free shipping on orders over $50" } },
+        { "type": "bullet", "settings": { "text": "30-day money back guarantee" } },
+        { "type": "bullet", "settings": { "text": "Made with clean, natural ingredients" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

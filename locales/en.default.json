@@ -391,6 +391,33 @@
           "label": "Color scheme"
         }
       }
+    },
+    "header_nav": {
+      "name": "Header nav"
+    },
+    "hero": {
+      "name": "Hero offer"
+    },
+    "reviews": {
+      "name": "Reviews panel"
+    },
+    "ugc_gallery": {
+      "name": "UGC gallery"
+    },
+    "before_after": {
+      "name": "Before / After slider"
+    },
+    "ingredients": {
+      "name": "Clean ingredients"
+    },
+    "testimonials": {
+      "name": "What they are saying"
+    },
+    "faq": {
+      "name": "FAQ accordion"
+    },
+    "founder": {
+      "name": "Founder note"
     }
   },
   "localization": {

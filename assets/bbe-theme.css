@@ -1,0 +1,42 @@
+/* ==========================================================================
+   BBE — Global Theme Tokens
+   Brand color palette, typography scale, and spacing variables shared
+   across all BBE sections. Loaded once via layout/theme.liquid.
+   Note: @font-face declarations live in snippets/bbe-fonts.liquid
+   because they require Shopify's asset_url filter.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Color tokens — Beauty by Earth brand palette
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Core neutrals */
+  --bbe-color-black:     #000000;
+  --bbe-color-white:     #ffffff;
+  --bbe-color-creme:     #f5ede6;
+
+  /* Brand colors */
+  --bbe-color-chocolate: #3b1f0e;
+  --bbe-color-rose:      #c4857a;
+  --bbe-color-blue:      #7a9baa;
+
+  /* Typography */
+  --bbe-font-heading:    'EB Garamond', Georgia, serif;
+  --bbe-font-body:       'Figtree', system-ui, sans-serif;
+
+  /* Font weights */
+  --bbe-weight-regular:  400;
+  --bbe-weight-semibold: 600;
+
+  /* Spacing scale */
+  --bbe-space-xs:    4px;
+  --bbe-space-sm:    8px;
+  --bbe-space-md:   16px;
+  --bbe-space-lg:   32px;
+  --bbe-space-xl:   64px;
+  --bbe-space-2xl: 100px;
+
+  /* Max content width */
+  --bbe-max-width: 1200px;
+}

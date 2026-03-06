@@ -15,6 +15,9 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {{- 'bbe-theme.css' | asset_url | stylesheet_tag -}}
+    {%- render 'bbe-fonts' -%}
+
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}

@@ -1,73 +1,170 @@
 {{- 'bbe-reviews.css' | asset_url | stylesheet_tag -}}
 
+{%- assign section_max_width = section.settings.section_max_width | default: 1900 -%}
+{%- assign section_min_height_desktop = section.settings.section_min_height_desktop | default: 820 -%}
+{%- assign section_min_height_mobile = section.settings.section_min_height_mobile | default: 620 -%}
+{%- assign content_padding_y = section.settings.content_padding_y | default: 72 -%}
+{%- assign content_padding_x = section.settings.content_padding_x | default: 24 -%}
+{%- assign background_color = section.settings.background_color | default: '#ddd2bf' -%}
+{%- assign background_overlay_opacity = section.settings.background_overlay_opacity | default: 0 | times: 0.01 -%}
+{%- assign card_max_width = section.settings.card_max_width | default: 1680 -%}
+{%- assign card_height_desktop = section.settings.card_height_desktop | default: 650 -%}
+{%- assign card_height_mobile = section.settings.card_height_mobile | default: 460 -%}
+{%- assign card_height_preset = section.settings.card_height_preset | default: 'custom' -%}
+{%- assign card_preset_class = '' -%}
+{%- case card_height_preset -%}
+  {%- when 'h650' -%}
+    {%- assign card_preset_class = ' bbe-reviews--h650' -%}
+  {%- when 'h700' -%}
+    {%- assign card_preset_class = ' bbe-reviews--h700' -%}
+  {%- when 'h760' -%}
+    {%- assign card_preset_class = ' bbe-reviews--h760' -%}
+{%- endcase -%}
+{%- assign card_blur = section.settings.card_blur | default: 8 -%}
+{%- assign card_opacity = section.settings.card_opacity | default: 86 | times: 0.01 -%}
+{%- assign card_radius = section.settings.card_radius | default: 30 -%}
+{%- assign card_padding_y = section.settings.card_padding_y | default: 52 -%}
+{%- assign card_padding_x = section.settings.card_padding_x | default: 64 -%}
+{%- assign card_text_color = section.settings.card_text_color | default: '#111111' -%}
+{%- assign autoplay_speed_ms = section.settings.review_autoplay_seconds | default: 5 | times: 1000 -%}
+
 <section
-  class="bbe-reviews"
-  data-autoplay="{{ section.settings.autoplay }}"
-  data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+  class="bbe-reviews{{ card_preset_class }}"
+  data-bbe-reviews
+  data-autoplay="{{ section.settings.review_autoplay }}"
+  data-autoplay-speed="{{ autoplay_speed_ms }}"
+  style="
+    --bbe-reviews-max-width: {{ card_max_width }}px;
+    --bbe-reviews-min-height-desktop: {{ section_min_height_desktop }}px;
+    --bbe-reviews-min-height-mobile: {{ section_min_height_mobile }}px;
+    --bbe-reviews-padding-y: {{ content_padding_y }}px;
+    --bbe-reviews-padding-x: {{ content_padding_x }}px;
+    --bbe-reviews-bg: {{ background_color }};
+    --bbe-reviews-card-text: {{ card_text_color }};
+    --bbe-reviews-overlay-opacity: {{ background_overlay_opacity }};
+    --bbe-reviews-card-max-width: {{ card_max_width }}px;
+    --bbe-reviews-card-height-desktop: {{ card_height_desktop }}px;
+    --bbe-reviews-card-height-mobile: {{ card_height_mobile }}px;
+    --bbe-reviews-card-blur: {{ card_blur }}px;
+    --bbe-reviews-card-opacity: {{ card_opacity }};
+    --bbe-reviews-card-radius: {{ card_radius }}px;
+    --bbe-reviews-card-padding-y: {{ card_padding_y }}px;
+    --bbe-reviews-card-padding-x: {{ card_padding_x }}px;
+  "
 >
-  <div class="bbe-reviews__inner">
-
-    {%- if section.settings.headline != blank -%}
-      <h2 class="bbe-reviews__headline">{{ section.settings.headline }}</h2>
-    {%- endif -%}
-
-    <div class="bbe-reviews__summary" aria-label="{{ section.settings.star_rating }} out of 5 stars">
-      <div class="bbe-reviews__stars" role="img" aria-hidden="true">
-        {%- assign fullStars = section.settings.star_rating | floor -%}
-        {%- for i in (1..5) -%}
-          <span class="bbe-reviews__star{% if i <= fullStars %} bbe-reviews__star--filled{% endif %}">★</span>
-        {%- endfor -%}
-      </div>
+  {%- if section.settings.background_image != blank -%}
+    <div class="bbe-reviews__bg" aria-hidden="true">
+      {{
+        section.settings.background_image
+        | image_url: width: 2200
+        | image_tag:
+          widths: '800,1200,1600,2000,2200',
+          sizes: '100vw',
+          alt: '',
+          loading: 'lazy',
+          class: 'bbe-reviews__bg-image'
+      }}
     </div>
+  {%- endif -%}
 
-    {%- if section.blocks.size > 0 -%}
-      <div
-        class="bbe-reviews__carousel"
-        role="region"
-        aria-label="Customer reviews"
-        aria-live="polite"
+  <div class="bbe-reviews__overlay" aria-hidden="true"></div>
+
+  <div class="bbe-reviews__inner">
+    <div
+      class="bbe-reviews__panel"
+      role="region"
+      aria-label="Customer reviews"
+      aria-live="off"
+      data-reviews-carousel
+    >
+      <button
+        class="bbe-reviews__nav bbe-reviews__nav--prev"
+        type="button"
+        data-reviews-prev
+        aria-label="Previous review"
       >
-        <div class="bbe-reviews__track" data-reviews-track>
-          {%- for block in section.blocks -%}
-            <article
-              class="bbe-reviews__slide"
-              data-review-slide
-              aria-hidden="{{ forloop.first | json | replace: 'true', 'false' | replace: 'false', forloop.first == false }}"
-              {{ block.shopify_attributes }}
+        &#10094;
+      </button>
+
+      <button
+        class="bbe-reviews__nav bbe-reviews__nav--next"
+        type="button"
+        data-reviews-next
+        aria-label="Next review"
+      >
+        &#10095;
+      </button>
+
+      <div class="bbe-reviews__panel-content">
+        {%- if section.settings.headline != blank or section.settings.headline_emphasis != blank -%}
+          <h2 class="bbe-reviews__headline">
+            {%- if section.settings.headline != blank -%}
+              <span>{{ section.settings.headline | escape }}</span>
+            {%- endif -%}
+            {%- if section.settings.headline_emphasis != blank -%}
+              <em>{{ section.settings.headline_emphasis | escape }}</em>
+            {%- endif -%}
+          </h2>
+        {%- endif -%}
+
+        <div class="bbe-reviews__stars" aria-label="{{ section.settings.star_rating }} out of 5 stars">
+          {%- for i in (1..5) -%}
+            <span
+              class="bbe-reviews__star{% if i <= section.settings.star_rating %} bbe-reviews__star--filled{% endif %}"
+              aria-hidden="true"
+              >&#9733;</span
             >
-              {%- if block.settings.quote != blank -%}
-                <blockquote class="bbe-reviews__quote">
-                  <p>{{ block.settings.quote }}</p>
-                  {%- if block.settings.author != blank -%}
-                    <footer class="bbe-reviews__author">
-                      <cite>{{ block.settings.author }}</cite>
-                    </footer>
-                  {%- endif -%}
-                </blockquote>
-              {%- endif -%}
-            </article>
           {%- endfor -%}
         </div>
 
-        <div class="bbe-reviews__controls" role="group" aria-label="Review navigation">
-          <button
-            class="bbe-reviews__btn bbe-reviews__btn--prev"
-            aria-label="Previous review"
-            data-reviews-prev
-          >
-            &#8592;
-          </button>
-          <button
-            class="bbe-reviews__btn bbe-reviews__btn--next"
-            aria-label="Next review"
-            data-reviews-next
-          >
-            &#8594;
-          </button>
-        </div>
-      </div>
-    {%- endif -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="bbe-reviews__slides" data-reviews-track>
+            {%- for block in section.blocks -%}
+              {%- assign review_title = block.settings.review_title -%}
+              {%- assign review_subtitle = block.settings.subtitle -%}
+              {%- assign review_body = block.settings.body | default: block.settings.quote -%}
+              {%- assign review_verified_text = block.settings.verified_label
+                | default: section.settings.verified_label
+              -%}
+              <article
+                class="bbe-reviews__slide{% if forloop.first %} is-active{% endif %}"
+                data-review-slide
+                {% if forloop.first %}
+                  aria-hidden="false"
+                {% else %}
+                  aria-hidden="true"
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {%- if review_title != blank -%}
+                  <h3 class="bbe-reviews__review-title">&ldquo;{{ review_title | escape }}&rdquo;</h3>
+                {%- endif -%}
 
+                {%- if review_subtitle != blank -%}
+                  <p class="bbe-reviews__review-subtitle">{{ review_subtitle | escape }}</p>
+                {%- endif -%}
+
+                {%- if review_body != blank -%}
+                  <p class="bbe-reviews__review-body">{{ review_body | escape | newline_to_br }}</p>
+                {%- endif -%}
+
+                <footer class="bbe-reviews__footer">
+                  {%- if block.settings.author != blank -%}
+                    <span class="bbe-reviews__author-wrap">
+                      <span class="bbe-reviews__author-dot" aria-hidden="true">&#8226;</span>
+                      <span class="bbe-reviews__author">{{ block.settings.author | escape }}</span>
+                    </span>
+                  {%- endif -%}
+                  {%- if review_verified_text != blank -%}
+                    <span class="bbe-reviews__verified">{{ review_verified_text | escape }}</span>
+                  {%- endif -%}
+                </footer>
+              </article>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -80,10 +177,201 @@
   "class": "bbe-reviews-section",
   "settings": [
     {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "label": "Section max width",
+      "min": 1200,
+      "max": 2100,
+      "step": 20,
+      "unit": "px",
+      "default": 1900
+    },
+    {
+      "type": "range",
+      "id": "section_min_height_desktop",
+      "label": "Min height desktop",
+      "min": 480,
+      "max": 1100,
+      "step": 10,
+      "unit": "px",
+      "default": 820
+    },
+    {
+      "type": "range",
+      "id": "section_min_height_mobile",
+      "label": "Min height mobile",
+      "min": 420,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "content_padding_y",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x",
+      "label": "Horizontal padding",
+      "min": 8,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fallback background color",
+      "default": "#ddd2bf"
+    },
+    {
+      "type": "range",
+      "id": "background_overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "range",
+      "id": "card_max_width",
+      "label": "Card max width",
+      "min": 900,
+      "max": 1900,
+      "step": 10,
+      "unit": "px",
+      "default": 1680
+    },
+    {
+      "type": "select",
+      "id": "card_height_preset",
+      "label": "Card height preset",
+      "options": [
+        { "value": "custom", "label": "Custom (use sliders below)" },
+        { "value": "h650", "label": "650 px (QA)" },
+        { "value": "h700", "label": "700 px (QA)" },
+        { "value": "h760", "label": "760 px (QA)" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "range",
+      "id": "card_height_desktop",
+      "label": "Card height desktop",
+      "min": 420,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 650
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Card height mobile",
+      "min": 320,
+      "max": 760,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "card_blur",
+      "label": "Card blur",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_opacity",
+      "label": "Card opacity",
+      "min": 40,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 86
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "card_padding_y",
+      "label": "Card vertical padding",
+      "min": 12,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "card_padding_x",
+      "label": "Card horizontal padding",
+      "min": 12,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
       "type": "text",
       "id": "headline",
       "label": "Headline",
-      "default": "Over 100K reviews (and counting)."
+      "default": "Over 100K reviews"
+    },
+    {
+      "type": "text",
+      "id": "headline_emphasis",
+      "label": "Headline emphasis",
+      "default": " (and counting)."
     },
     {
       "type": "range",
@@ -95,23 +383,30 @@
       "default": 5
     },
     {
+      "type": "text",
+      "id": "verified_label",
+      "label": "Verified label",
+      "default": "VERIFIED PURCHASE"
+    },
+    {
       "type": "header",
-      "content": "Autoplay"
+      "content": "Slider"
     },
     {
       "type": "checkbox",
-      "id": "autoplay",
+      "id": "review_autoplay",
       "label": "Enable autoplay",
       "default": true
     },
     {
       "type": "range",
-      "id": "autoplay_speed",
-      "label": "Autoplay speed (seconds)",
-      "min": 2,
-      "max": 10,
+      "id": "review_autoplay_seconds",
+      "label": "Autoplay every",
+      "min": 3,
+      "max": 12,
       "step": 1,
-      "default": 4
+      "unit": "s",
+      "default": 5
     }
   ],
   "blocks": [
@@ -121,15 +416,36 @@
       "settings": [
         {
           "type": "text",
-          "id": "author",
-          "label": "Author name",
-          "default": "Happy Customer"
+          "id": "review_title",
+          "label": "Review title",
+          "default": "This deodorant is absolute gold!"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Legacy review body (optional)"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Review subtitle (optional)"
         },
         {
           "type": "textarea",
-          "id": "quote",
-          "label": "Review quote",
-          "default": "This product completely changed my routine. I will never go back!"
+          "id": "body",
+          "label": "Review body",
+          "default": "I am always trying to find things that are natural and actually work so I don't have any hormonal disruption. So many natural deodorants have not worked for me, but this stuff really works. No smell even after 24 hours. Love it!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Monica"
+        },
+        {
+          "type": "text",
+          "id": "verified_label",
+          "label": "Verified label override (optional)"
         }
       ]
     }
@@ -141,22 +457,25 @@
         {
           "type": "review",
           "settings": {
-            "author": "Sarah M.",
-            "quote": "This deodorant is absolute gold. I've tried everything and nothing worked until this."
+            "review_title": "This deodorant is absolute gold!",
+            "body": "I am always trying to find things that are natural and actually work so I don't have any hormonal disruption. So many natural deodorants have not worked for me, but this stuff really works. No smell even after 24 hours. Love it!",
+            "author": "Monica"
           }
         },
         {
           "type": "review",
           "settings": {
-            "author": "Jessica R.",
-            "quote": "I was skeptical but after one week I am completely converted. My skin feels amazing."
+            "review_title": "I stopped searching after this one.",
+            "body": "I have tested many brands and this is the first one that keeps me fresh all day without irritation. It actually does what it promises.",
+            "author": "Jessica"
           }
         },
         {
           "type": "review",
           "settings": {
-            "author": "Amanda K.",
-            "quote": "Finally a natural deodorant that actually works. I tell everyone about it."
+            "review_title": "Finally a natural deodorant that works.",
+            "body": "Comfortable, clean ingredients, and no odor even after workouts. This became part of my routine in one week.",
+            "author": "Amanda"
           }
         }
       ]

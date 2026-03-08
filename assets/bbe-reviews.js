@@ -1,63 +1,148 @@
 (function () {
-  const selectors = {
-    section:   '[data-autoplay]',
-    track:     '[data-reviews-track]',
-    slides:    '[data-review-slide]',
-    prevBtn:   '[data-reviews-prev]',
-    nextBtn:   '[data-reviews-next]',
-  };
-
-  function ReviewsCarousel(sectionEl) {
-    const slides      = Array.from(sectionEl.querySelectorAll(selectors.slides));
-    const prevBtn     = sectionEl.querySelector(selectors.prevBtn);
-    const nextBtn     = sectionEl.querySelector(selectors.nextBtn);
-    const autoplay    = sectionEl.dataset.autoplay === 'true';
-    const speed       = parseInt(sectionEl.dataset.autoplaySpeed, 10) || 4000;
-
-    let currentIndex  = 0;
-    let timer         = null;
-
-    if (slides.length === 0) return;
-
-    function goTo(index) {
-      slides[currentIndex].classList.remove('is-active');
-      slides[currentIndex].setAttribute('aria-hidden', 'true');
-
-      currentIndex = (index + slides.length) % slides.length;
-
-      slides[currentIndex].classList.add('is-active');
-      slides[currentIndex].setAttribute('aria-hidden', 'false');
+  function initReviewsSection(section) {
+    if (!section || section.dataset.reviewsReady === 'true') {
+      return;
     }
 
-    function startAutoplay() {
-      if (!autoplay) return;
-      timer = setInterval(() => goTo(currentIndex + 1), speed);
+    section.dataset.reviewsReady = 'true';
+
+    const carousel = section.querySelector('[data-reviews-carousel]');
+    const slides = Array.from(section.querySelectorAll('[data-review-slide]'));
+    const prevButton = section.querySelector('[data-reviews-prev]');
+    const nextButton = section.querySelector('[data-reviews-next]');
+    const autoplayEnabled = section.dataset.autoplay === 'true';
+    const autoplayDelay = parseInt(section.dataset.autoplaySpeed, 10) || 5000;
+
+    let activeIndex = slides.findIndex(function (slide) {
+      return slide.classList.contains('is-active');
+    });
+    let autoplayTimer = null;
+
+    if (!slides.length) {
+      return;
+    }
+
+    if (activeIndex < 0) {
+      activeIndex = 0;
+    }
+
+    function setLiveMode(announce) {
+      if (!carousel) {
+        return;
+      }
+
+      carousel.setAttribute('aria-live', announce ? 'polite' : 'off');
+    }
+
+    function render(announce) {
+      slides.forEach(function (slide, index) {
+        const isActive = index === activeIndex;
+
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      if (prevButton) {
+        prevButton.disabled = slides.length <= 1;
+      }
+
+      if (nextButton) {
+        nextButton.disabled = slides.length <= 1;
+      }
+
+      setLiveMode(announce);
+    }
+
+    function goTo(index, announce) {
+      activeIndex = (index + slides.length) % slides.length;
+      render(announce);
     }
 
     function stopAutoplay() {
-      clearInterval(timer);
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
     }
 
-    prevBtn && prevBtn.addEventListener('click', () => {
+    function startAutoplay() {
+      if (!autoplayEnabled || slides.length <= 1) {
+        return;
+      }
+
       stopAutoplay();
-      goTo(currentIndex - 1);
-      startAutoplay();
+      autoplayTimer = setInterval(function () {
+        goTo(activeIndex + 1, false);
+      }, autoplayDelay);
+    }
+
+    if (prevButton) {
+      prevButton.addEventListener('click', function () {
+        stopAutoplay();
+        goTo(activeIndex - 1, true);
+        startAutoplay();
+      });
+    }
+
+    if (nextButton) {
+      nextButton.addEventListener('click', function () {
+        stopAutoplay();
+        goTo(activeIndex + 1, true);
+        startAutoplay();
+      });
+    }
+
+    section.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') {
+        stopAutoplay();
+        goTo(activeIndex - 1, true);
+        startAutoplay();
+      }
+
+      if (event.key === 'ArrowRight') {
+        stopAutoplay();
+        goTo(activeIndex + 1, true);
+        startAutoplay();
+      }
     });
 
-    nextBtn && nextBtn.addEventListener('click', () => {
-      stopAutoplay();
-      goTo(currentIndex + 1);
-      startAutoplay();
+    section.addEventListener('mouseenter', stopAutoplay);
+    section.addEventListener('mouseleave', startAutoplay);
+    section.addEventListener('focusin', stopAutoplay);
+    section.addEventListener('focusout', function (event) {
+      if (!section.contains(event.relatedTarget)) {
+        startAutoplay();
+      }
     });
 
-    sectionEl.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft')  { stopAutoplay(); goTo(currentIndex - 1); startAutoplay(); }
-      if (e.key === 'ArrowRight') { stopAutoplay(); goTo(currentIndex + 1); startAutoplay(); }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
     });
 
-    goTo(0);
+    render(false);
     startAutoplay();
   }
 
-  document.querySelectorAll(selectors.section).forEach((el) => new ReviewsCarousel(el));
+  function initAll(root) {
+    const scope = root || document;
+    const sections = scope.querySelectorAll('[data-bbe-reviews]');
+
+    sections.forEach(initReviewsSection);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      initAll(document);
+    });
+  } else {
+    initAll(document);
+  }
+
+  document.addEventListener('shopify:section:load', function (event) {
+    initAll(event.target);
+  });
 })();

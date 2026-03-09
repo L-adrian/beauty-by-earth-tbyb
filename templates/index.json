@@ -1,210 +1,300 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "bbe_assessment_main": {
+      "type": "bbe-assessment",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "promo_1": {
+          "type": "promo_message",
           "settings": {
-            "heading": "Image banner",
-            "heading_size": "h0"
+            "label": "Limited-Time Offer:",
+            "text": "Try Today for $0",
+            "link_url": ""
           }
         },
-        "text": {
-          "type": "text",
+        "promo_2": {
+          "type": "promo_message",
           "settings": {
-            "text": "Give customers details about the banner image(s) or content on the template.",
-            "text_style": "body"
+            "label": "",
+            "text": "7-Day Trial. Only Pay If You Love It.",
+            "link_url": ""
           }
         },
-        "button": {
-          "type": "buttons",
+        "hero_b1": {
+          "type": "hero_bullet",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "text": "Ships today"
+          }
+        },
+        "hero_b2": {
+          "type": "hero_bullet",
+          "settings": {
+            "text": "Cancel before day 7, no charge"
+          }
+        },
+        "hero_b3": {
+          "type": "hero_bullet",
+          "settings": {
+            "text": "Autoships every 30 days. Cancel anytime"
+          }
+        },
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "review_title": "This deodorant is absolute gold!",
+            "subtitle": "",
+            "body": "I am always trying to find things that are natural and actually work so I don't have any hormonal disruption. So many natural deodorants have not worked for me, but this stuff actually really works. No smell even after 24 hours. Love it!",
+            "author": "Monica",
+            "verified_label": ""
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "review_title": "This deodorant is absolute gold!",
+            "subtitle": "",
+            "body": "I was skeptical but after one week I am completely converted. My skin feels amazing.",
+            "author": "Jessica R.",
+            "verified_label": ""
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "review_title": "This deodorant is absolute gold!",
+            "subtitle": "",
+            "body": "Finally a natural deodorant that actually works. I tell everyone about it.",
+            "author": "Amanda K.",
+            "verified_label": ""
+          }
+        },
+        "ugc_1": {
+          "type": "ugc_tile",
+          "settings": {
+            "image": "shopify://shop_images/thumbnail_rectangular_clean.jpg",
+            "alt_text": "",
+            "link_url": ""
+          }
+        },
+        "ugc_2": {
+          "type": "ugc_tile",
+          "settings": {
+            "image": "shopify://shop_images/1L4A3039.webp",
+            "alt_text": "",
+            "link_url": ""
+          }
+        },
+        "ugc_3": {
+          "type": "ugc_tile",
+          "settings": {
+            "image": "shopify://shop_images/new-magnesium-deodorants-2025-JENNY-JJR_0169.webp",
+            "alt_text": "",
+            "link_url": ""
+          }
+        },
+        "ugc_4": {
+          "type": "ugc_tile",
+          "settings": {
+            "image": "shopify://shop_images/new-magnesium-deodorants-2025-JENNY-JJR_0338.webp",
+            "alt_text": "",
+            "link_url": ""
+          }
+        },
+        "ugc_5": {
+          "type": "ugc_tile",
+          "settings": {
+            "image": "shopify://shop_images/1L4A2954.webp",
+            "alt_text": "",
+            "link_url": ""
+          }
+        },
+        "ingredient_1": {
+          "type": "ingredient_chip",
+          "settings": {
+            "title": "Orange Peel Oil",
+            "body": "Natural fragrance and skin-brightening properties."
+          }
+        },
+        "ingredient_2": {
+          "type": "ingredient_chip",
+          "settings": {
+            "title": "White Tea Extract",
+            "body": "Rich in antioxidants to protect and nourish."
+          }
+        },
+        "ingredient_3": {
+          "type": "ingredient_chip",
+          "settings": {
+            "title": "Magnesium Hydroxide",
+            "body": "Neutralizes odor without blocking your pores."
+          }
+        },
+        "ingredient_4": {
+          "type": "ingredient_chip",
+          "settings": {
+            "title": "Shea Butter",
+            "body": "Deeply moisturizing for soft, smooth skin."
+          }
+        },
+        "testimonial_1": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video_url": "",
+            "caption": ""
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video_url": "",
+            "caption": ""
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video_url": "",
+            "caption": ""
+          }
+        },
+        "testimonial_4": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video_url": "",
+            "caption": ""
+          }
+        },
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Most orders ship within 1-2 business days and arrive within 5-7 business days.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this deodorant safe for sensitive skin?",
+            "answer": "<p>Yes. Our formula is dermatologist-tested and free from harsh chemicals, making it suitable for all skin types.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day money-back guarantee. If you are not satisfied, contact us and we will make it right.</p>"
           }
         }
       },
       "block_order": [
-        "heading",
-        "text",
-        "button"
+        "promo_1",
+        "promo_2",
+        "hero_b1",
+        "hero_b2",
+        "hero_b3",
+        "review_1",
+        "review_2",
+        "review_3",
+        "ugc_1",
+        "ugc_2",
+        "ugc_3",
+        "ugc_4",
+        "ugc_5",
+        "ingredient_1",
+        "ingredient_2",
+        "ingredient_3",
+        "ingredient_4",
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3",
+        "testimonial_4",
+        "faq_1",
+        "faq_2",
+        "faq_3"
       ],
+      "name": "Assessment page",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
-      }
-    },
-    "rich_text": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 0
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 28,
-        "padding_bottom": 36
-      }
-    },
-    "collage": {
-      "type": "collage",
-      "blocks": {
-        "collection-0": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "product": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "second_image": false
-          }
-        },
-        "collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
-      ],
-      "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "video": {
-      "type": "video",
-      "settings": {
-        "heading": "",
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "heading_size": "h1",
-        "description": "",
-        "full_width": false,
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column1": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column2": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column3": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column1",
-        "column2",
-        "column3"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
-        "swipe_on_mobile": false,
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "section_max_width": 1900,
+        "content_padding_y": 124,
+        "background_color": "#f2e7d3",
+        "text_color": "#111111",
+        "button_style": "solid",
+        "show_promo_bar": true,
+        "show_header_row": true,
+        "show_hero": true,
+        "show_reviews": true,
+        "show_ugc_strip": true,
+        "show_before_after": true,
+        "show_ingredients": true,
+        "show_testimonials": true,
+        "show_faq": true,
+        "show_founder": true,
+        "promo_color_scheme": "dark",
+        "header_logo_width": 120,
+        "header_nav_link_1_text": "SHOP ALL",
+        "header_nav_link_1_url": "",
+        "header_nav_link_2_text": "BEST SELLERS",
+        "header_nav_link_2_url": "",
+        "header_cta_text": "START MY FREE TRIAL",
+        "header_cta_url": "",
+        "hero_headline": "Try It. Love It. Or Pay Nothing.",
+        "hero_subheadline": "Only pay $40 after 7 days (if you decide to keep it).",
+        "hero_primary_cta_text": "START MY FREE TRIAL",
+        "hero_primary_cta_url": "",
+        "hero_secondary_cta_text": "SEE HOW IT WORKS",
+        "hero_secondary_cta_url": "",
+        "hero_media_image": "shopify://shop_images/background-IA.png",
+        "hero_show_badge": true,
+        "hero_badge_line": "Get our 2-pack today for $0.",
+        "hero_badge_highlight": "$0",
+        "reviews_background_image": "shopify://shop_images/ChatGPT_Image_8_mar_2026_13_24_05.png",
+        "reviews_background_color": "#5d3d2f",
+        "reviews_card_radius": 30,
+        "reviews_card_blur": 4,
+        "reviews_card_opacity": 86,
+        "reviews_headline": "Over 100K reviews",
+        "reviews_headline_emphasis": "(and counting).",
+        "reviews_star_rating": 5,
+        "reviews_verified_label": "VERIFIED PURCHASE",
+        "reviews_autoplay": true,
+        "reviews_autoplay_seconds": 4,
+        "ugc_background_color": "#ebebeb",
+        "ugc_gap": 14,
+        "ugc_show_arrows_desktop": false,
+        "before_after_background_color": "#efefef",
+        "before_after_heading": "See The Difference",
+        "before_after_subheading": "More hydration, neutralized odors, and better for the planet.",
+        "before_after_before_image": "shopify://shop_images/new-magnesium-deodorants-2025-JENNY-JJR_0159.webp",
+        "before_after_after_image": "shopify://shop_images/ChatGPT_Image_9_mar_2026_09_39_15.png",
+        "before_after_before_label": "Before",
+        "before_after_after_label": "After",
+        "ingredients_background_color": "#f0e5d0",
+        "ingredients_heading": "Clean Ingredients",
+        "ingredients_tagline_1": "No aluminum. No parabens.",
+        "ingredients_tagline_2": "No synthetic antibacterials.",
+        "ingredients_button_text": "See full ingredients",
+        "ingredients_button_url": "",
+        "testimonials_heading": "What They Are Saying",
+        "testimonials_show_arrows_desktop": true,
+        "faq_background_color": "#ffffff",
+        "faq_heading": "Still have questions?",
+        "faq_single_open": true,
+        "founder_background_color": "#ece3d4",
+        "founder_heading": "Fresh that actually works",
+        "founder_body": "<p>I created this formula because I was tired of choosing between products that worked and products that were good for my body. You deserve both.</p>",
+        "founder_name": "- Sarah, Founder"
       }
     }
   },
   "order": [
-    "image_banner",
-    "rich_text",
-    "featured_collection",
-    "collage",
-    "video",
-    "multicolumn"
+    "bbe_assessment_main"
   ]
 }

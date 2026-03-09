@@ -1,0 +1,1602 @@
+﻿{%- assign promo_blocks = section.blocks | where: 'type', 'promo_message' -%}
+{%- assign hero_bullets = section.blocks | where: 'type', 'hero_bullet' -%}
+{%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+{%- assign ugc_tiles = section.blocks | where: 'type', 'ugc_tile' -%}
+{%- assign ingredient_chips = section.blocks | where: 'type', 'ingredient_chip' -%}
+{%- assign testimonial_tiles = section.blocks | where: 'type', 'testimonial_tile' -%}
+{%- assign faq_items = section.blocks | where: 'type', 'faq_item' -%}
+{%- assign hero_headline = section.settings.hero_headline -%}
+{%- if hero_headline contains 'Love It. Or' -%}
+  {%- assign hero_headline = hero_headline | replace: 'Love It. Or', 'Love It.<br>Or' -%}
+{%- endif -%}
+
+<section
+  id="bbe-assessment-{{ section.id }}"
+  class="bbe-a bbe-a--{{ section.settings.button_style }}"
+  data-bbe-assessment
+>
+  {%- if section.settings.show_promo_bar and promo_blocks.size > 0 -%}
+    <div class="bbe-a__promo bbe-a__promo--{{ section.settings.promo_color_scheme }}">
+      <div class="bbe-a__shell bbe-a__promo-shell">
+        {%- for block in promo_blocks -%}
+          <div class="bbe-a__promo-item" {{ block.shopify_attributes }}>
+            {%- if block.settings.link_url != blank -%}<a href="{{ block.settings.link_url }}">{%- endif -%}
+            {%- if block.settings.label != blank -%}
+              <strong>{{ block.settings.label | escape }}</strong>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <span>{{ block.settings.text | escape }}</span>
+            {%- endif -%}
+            {%- if block.settings.link_url != blank -%}</a>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_header_row -%}
+    <header class="bbe-a__header">
+      <div class="bbe-a__shell bbe-a__header-shell">
+        <nav class="bbe-a__nav" aria-label="Main navigation">
+          <ul role="list">
+            {%- if section.settings.header_nav_link_1_text != blank -%}
+              <li>
+                <a href="{{ section.settings.header_nav_link_1_url | default: '#' }}">
+                  {{- section.settings.header_nav_link_1_text -}}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.header_nav_link_2_text != blank -%}
+              <li>
+                <a href="{{ section.settings.header_nav_link_2_url | default: '#' }}">
+                  {{- section.settings.header_nav_link_2_text -}}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+        <a href="{{ routes.root_url }}" class="bbe-a__logo" aria-label="{{ shop.name }}">
+          {%- if section.settings.header_logo != blank -%}
+            {{
+              section.settings.header_logo
+              | image_url: width: section.settings.header_logo_width
+              | image_tag: width: section.settings.header_logo_width, alt: section.settings.header_logo.alt
+              | default: shop.name, loading: 'eager', class: 'bbe-a__logo-img'
+            }}
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </a>
+        {%- if section.settings.header_cta_text != blank -%}
+          <a href="{{ section.settings.header_cta_url | default: '#' }}" class="bbe-a__btn bbe-a__btn--header">
+            {{- section.settings.header_cta_text -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </header>
+  {%- endif -%}
+
+  {%- if section.settings.show_hero -%}
+    <div class="bbe-a__hero">
+      <div class="bbe-a__shell bbe-a__hero-shell">
+        <div class="bbe-a__hero-copy">
+          {%- if section.settings.hero_headline != blank -%}
+            <h1>{{ hero_headline }}</h1>
+          {%- endif -%}
+          {%- if section.settings.hero_subheadline != blank -%}
+            <p class="bbe-a__hero-sub">{{ section.settings.hero_subheadline }}</p>
+          {%- endif -%}
+          {%- if hero_bullets.size > 0 -%}
+            <ul role="list" class="bbe-a__hero-bullets">
+              {%- for block in hero_bullets -%}
+                <li {{ block.shopify_attributes }}>
+                  <span class="bbe-a__bullet-mark" aria-hidden="true">&#10003;</span>
+                  <span>{{ block.settings.text }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          <div class="bbe-a__hero-actions">
+            {%- if section.settings.hero_primary_cta_text != blank -%}
+              <a
+                href="{{ section.settings.hero_primary_cta_url | default: '#' }}"
+                class="bbe-a__btn bbe-a__btn--primary"
+              >
+                {{- section.settings.hero_primary_cta_text -}}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.hero_secondary_cta_text != blank -%}
+              <a
+                href="{{ section.settings.hero_secondary_cta_url | default: '#' }}"
+                class="bbe-a__btn bbe-a__btn--secondary"
+              >
+                {{- section.settings.hero_secondary_cta_text -}}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="bbe-a__hero-media">
+          {%- if section.settings.hero_show_badge -%}
+            <div
+              class="bbe-a__badge-wrap"
+              aria-label="{{ section.settings.hero_badge_line }} {{ section.settings.hero_badge_highlight }}"
+            >
+              <svg
+                class="bbe-a__badge-ring"
+                viewBox="0 0 140 140"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <defs>
+                  <path id="bbe-a-badge-path-{{ section.id }}" d="M 18,70 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" />
+                </defs>
+                <text>
+                  <textPath href="#bbe-a-badge-path-{{ section.id }}" startOffset="50%" text-anchor="middle">{{ section.settings.hero_badge_line }}</textPath>
+                </text>
+              </svg>
+              <div class="bbe-a__badge">{{ section.settings.hero_badge_highlight }}</div>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.hero_media_image != blank -%}
+            {{
+              section.settings.hero_media_image
+              | image_url: width: 2400
+              | image_tag:
+                widths: '640,960,1200,1600,2000,2400',
+                sizes: '(max-width: 1100px) 100vw, 50vw',
+                loading: 'eager',
+                alt: section.settings.hero_headline,
+                class: 'bbe-a__hero-image'
+            }}
+          {%- else -%}
+            <div class="bbe-a__placeholder"></div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_reviews -%}
+    <div
+      class="bbe-a__reviews"
+      data-a-reviews
+      data-autoplay="{{ section.settings.reviews_autoplay }}"
+      data-speed="{{ section.settings.reviews_autoplay_seconds | times: 1000 }}"
+    >
+      {%- if section.settings.reviews_background_image != blank -%}
+        {{
+          section.settings.reviews_background_image
+          | image_url: width: 2200
+          | image_tag:
+            widths: '800,1200,1600,2000,2200',
+            sizes: '100vw',
+            loading: 'lazy',
+            alt: '',
+            class: 'bbe-a__reviews-bg'
+        }}
+      {%- endif -%}
+      <div class="bbe-a__shell">
+        <div class="bbe-a__reviews-card" data-a-reviews-carousel aria-live="off" tabindex="0">
+          {%- if review_blocks.size > 1 -%}
+            <button
+              class="bbe-a__nav-btn bbe-a__nav-btn--prev"
+              data-a-reviews-prev
+              type="button"
+              aria-label="Previous review"
+            >
+              <span class="bbe-a__nav-icon" aria-hidden="true"></span>
+            </button>
+            <button
+              class="bbe-a__nav-btn bbe-a__nav-btn--next"
+              data-a-reviews-next
+              type="button"
+              aria-label="Next review"
+            >
+              <span class="bbe-a__nav-icon" aria-hidden="true"></span>
+            </button>
+          {%- endif -%}
+          <h2 class="bbe-a__title">
+            {{ section.settings.reviews_headline }}
+            <em>{{ section.settings.reviews_headline_emphasis }}</em>
+          </h2>
+          <p class="bbe-a__stars" aria-label="{{ section.settings.reviews_star_rating }} out of 5 stars">
+            {%- for i in (1..5) -%}
+              <span
+                class="bbe-a__star{% if i <= section.settings.reviews_star_rating %} is-filled{% endif %}"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M12 1.8l3.1 6.28 6.93 1-5.01 4.88 1.18 6.89L12 17.6l-6.2 3.25 1.18-6.89L1.97 9.08l6.93-1L12 1.8z" />
+                </svg>
+              </span>
+            {%- endfor -%}
+          </p>
+          {%- if review_blocks.size > 0 -%}
+            <div data-a-reviews-track>
+              {%- for block in review_blocks -%}
+                {%- assign verified = block.settings.verified_label
+                  | default: section.settings.reviews_verified_label
+                -%}
+                <article
+                  class="bbe-a__review{% if forloop.first %} is-active{% endif %}"
+                  data-a-reviews-slide
+                  {% if forloop.first %}
+                    aria-hidden="false"
+                  {% else %}
+                    aria-hidden="true"
+                  {% endif %}
+                  {{ block.shopify_attributes }}
+                >
+                  <h3>“{{ block.settings.review_title }}”</h3>
+                  {%- if block.settings.subtitle != blank -%}
+                    <p>{{ block.settings.subtitle }}</p>
+                  {%- endif -%}
+                  <p>{{ block.settings.body | escape | newline_to_br }}</p>
+                  <footer class="bbe-a__review-footer">
+                    {%- if block.settings.author != blank -%}
+                      <strong class="bbe-a__review-author">• {{ block.settings.author }}</strong>
+                    {%- endif -%}
+                    {%- if verified != blank -%}
+                      <span class="bbe-a__review-verified">{{ verified }}</span>
+                    {%- endif -%}
+                  </footer>
+                </article>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_ugc_strip and ugc_tiles.size > 0 -%}
+    <div class="bbe-a__strip" data-a-ugc>
+      <div class="bbe-a__shell">
+        {%- if section.settings.ugc_show_arrows_desktop -%}
+          <div class="bbe-a__actions">
+            <button type="button" data-a-ugc-prev aria-label="Previous tiles">&#8592;</button>
+            <button type="button" data-a-ugc-next aria-label="Next tiles">&#8594;</button>
+          </div>
+        {%- endif -%}
+        <div class="bbe-a__viewport" data-a-ugc-viewport>
+          <ul class="bbe-a__track" role="list">
+            {%- for block in ugc_tiles -%}
+              <li class="bbe-a__tile" {{ block.shopify_attributes }}>
+                {%- if block.settings.link_url != blank -%}
+                  <a href="{{ block.settings.link_url }}" class="bbe-a__media">
+                {%- else -%}
+                  <div class="bbe-a__media">
+                {%- endif -%}
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 330, height: 420, crop: 'center'
+                    | image_tag:
+                      width: 330,
+                      height: 420,
+                      loading: 'lazy',
+                      alt: block.settings.alt_text,
+                      class: 'bbe-a__img'
+                  }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'bbe-a__img bbe-a__img--placeholder' }}
+                {%- endif -%}
+                {%- if block.settings.link_url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_before_after -%}
+    {%- assign before_label = section.settings.before_after_before_label | default: 'Before' -%}
+    {%- assign after_label = section.settings.before_after_after_label | default: 'After' -%}
+    <div class="bbe-a__before-after">
+      <div class="bbe-a__shell">
+        <h2 class="bbe-a__title">{{ section.settings.before_after_heading }}</h2>
+        {%- if section.settings.before_after_subheading != blank -%}
+          <p class="bbe-a__sub">{{ section.settings.before_after_subheading }}</p>
+        {%- endif -%}
+        <p class="bbe-a__sr-only" id="bbe-a-ba-help-{{ section.id }}">
+          Drag the slider left or right to compare {{ before_label }} and {{ after_label }} images.
+          You can also use the left and right arrow keys while focused on the slider handle.
+        </p>
+        <div
+          class="bbe-a__ba"
+          data-a-before-after
+          data-before-label="{{ before_label | escape }}"
+          data-after-label="{{ after_label | escape }}"
+          role="group"
+          aria-label="{{ before_label }} and {{ after_label }} image comparison"
+        >
+          <div class="bbe-a__ba-pane" id="bbe-a-before-pane-{{ section.id }}">
+            {%- if section.settings.before_after_before_image != blank -%}
+              {{
+                section.settings.before_after_before_image
+                | image_url: width: 1600
+                | image_tag: loading: 'lazy', alt: section.settings.before_after_before_label, class: 'bbe-a__ba-img'
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'bbe-a__ba-img bbe-a__ba-img--placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="bbe-a__ba-pane bbe-a__ba-pane--after" data-a-before-after-pane id="bbe-a-after-pane-{{ section.id }}">
+            {%- if section.settings.before_after_after_image != blank -%}
+              {{
+                section.settings.before_after_after_image
+                | image_url: width: 1600
+                | image_tag: loading: 'lazy', alt: section.settings.before_after_after_label, class: 'bbe-a__ba-img'
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'bbe-a__ba-img bbe-a__ba-img--placeholder' }}
+            {%- endif -%}
+          </div>
+          <div
+            class="bbe-a__ba-handle"
+            data-a-before-after-handle
+            role="slider"
+            tabindex="0"
+            aria-label="{{ before_label }} and {{ after_label }} comparison slider"
+            aria-describedby="bbe-a-ba-help-{{ section.id }}"
+            aria-controls="bbe-a-before-pane-{{ section.id }} bbe-a-after-pane-{{ section.id }}"
+            aria-orientation="horizontal"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+            aria-valuetext="{{ before_label }} 50%, {{ after_label }} 50%"
+          >
+            <span class="bbe-a__ba-handle-line" aria-hidden="true"></span>
+            <span class="bbe-a__ba-knob" aria-hidden="true">
+              <span class="bbe-a__ba-knob-grip"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_ingredients -%}
+    <div class="bbe-a__ingredients">
+      <div class="bbe-a__shell bbe-a__ingredients-shell">
+        <div class="bbe-a__chips">
+          {%- for block in ingredient_chips limit: 2 -%}
+            <article class="bbe-a__chip" {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.body }}</p>
+            </article>
+          {%- endfor -%}
+        </div>
+        <div class="bbe-a__center">
+          <h2 class="bbe-a__title">{{ section.settings.ingredients_heading }}</h2>
+          {%- if section.settings.ingredients_product_image != blank -%}
+            {{
+              section.settings.ingredients_product_image
+              | image_url: width: 540
+              | image_tag: loading: 'lazy', alt: section.settings.ingredients_heading, class: 'bbe-a__ingredients-image'
+            }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'bbe-a__ingredients-image bbe-a__ingredients-image--placeholder' }}
+          {%- endif -%}
+          {%- if section.settings.ingredients_tagline_1 != blank -%}
+            <p>{{ section.settings.ingredients_tagline_1 }}</p>
+          {%- endif -%}
+          {%- if section.settings.ingredients_tagline_2 != blank -%}
+            <p>{{ section.settings.ingredients_tagline_2 }}</p>
+          {%- endif -%}
+          {%- if section.settings.ingredients_button_text != blank -%}
+            <a
+              href="{{ section.settings.ingredients_button_url | default: '#' }}"
+              class="bbe-a__btn bbe-a__btn--secondary"
+            >
+              {{- section.settings.ingredients_button_text -}}
+            </a>
+          {%- endif -%}
+        </div>
+        <div class="bbe-a__chips">
+          {%- for block in ingredient_chips offset: 2 limit: 2 -%}
+            <article class="bbe-a__chip" {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.body }}</p>
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_testimonials and testimonial_tiles.size > 0 -%}
+    <div class="bbe-a__strip" data-a-testimonials>
+      <div class="bbe-a__shell">
+        <h2 class="bbe-a__title">{{ section.settings.testimonials_heading }}</h2>
+        {%- if section.settings.testimonials_show_arrows_desktop -%}
+          <div class="bbe-a__actions">
+            <button type="button" data-a-testimonials-prev aria-label="Previous testimonials">&#8592;</button>
+            <button type="button" data-a-testimonials-next aria-label="Next testimonials">&#8594;</button>
+          </div>
+        {%- endif -%}
+        <div class="bbe-a__viewport" data-a-testimonials-viewport>
+          <ul class="bbe-a__track" role="list">
+            {%- for block in testimonial_tiles -%}
+              <li class="bbe-a__tile" {{ block.shopify_attributes }}>
+                <div class="bbe-a__testi">
+                  {%- if block.settings.video_url != blank -%}
+                    <video
+                      src="{{ block.settings.video_url }}"
+                      class="bbe-a__testi-video"
+                      playsinline
+                      muted
+                      loop
+                      preload="none"
+                    ></video>
+                    <button type="button" data-a-play-btn class="bbe-a__play" aria-label="Play video">&#9658;</button>
+                  {%- elsif block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 800
+                      | image_tag: loading: 'lazy', alt: block.settings.caption, class: 'bbe-a__testi-img'
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'bbe-a__testi-img bbe-a__testi-img--placeholder' }}
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.caption != blank -%}
+                  <p class="bbe-a__cap">{{ block.settings.caption }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_faq -%}
+    <div class="bbe-a__faq" data-a-faq data-single-open="{{ section.settings.faq_single_open }}">
+      <div class="bbe-a__shell bbe-a__faq-shell">
+        <div>
+          {%- if section.settings.faq_image != blank -%}
+            {{
+              section.settings.faq_image
+              | image_url: width: 1200
+              | image_tag: loading: 'lazy', alt: section.settings.faq_heading, class: 'bbe-a__faq-img'
+            }}
+          {%- endif -%}
+        </div>
+        <div class="bbe-a__faq-copy">
+          <h2 class="bbe-a__title">{{ section.settings.faq_heading }}</h2>
+          <ul role="list">
+            {%- for block in faq_items -%}
+              <li class="bbe-a__faq-item" {{ block.shopify_attributes }}>
+                <button
+                  type="button"
+                  data-a-faq-btn
+                  aria-expanded="false"
+                  aria-controls="faq-{{ section.id }}-{{ forloop.index }}"
+                  id="faq-btn-{{ section.id }}-{{ forloop.index }}"
+                >
+                  {{ block.settings.question }}
+                </button>
+                <div
+                  id="faq-{{ section.id }}-{{ forloop.index }}"
+                  data-a-faq-answer
+                  hidden
+                  aria-labelledby="faq-btn-{{ section.id }}-{{ forloop.index }}"
+                >
+                  {{ block.settings.answer }}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_founder -%}
+    <div class="bbe-a__founder">
+      <div class="bbe-a__shell bbe-a__founder-shell">
+        <div>
+          <h2 class="bbe-a__title">{{ section.settings.founder_heading }}</h2>
+          <div>{{ section.settings.founder_body }}</div>
+          <p>
+            <strong>{{ section.settings.founder_name }}</strong>
+          </p>
+        </div>
+        <div>
+          {%- if section.settings.founder_image != blank -%}
+            {{
+              section.settings.founder_image
+              | image_url: width: 1200
+              | image_tag: loading: 'lazy', alt: section.settings.founder_name, class: 'bbe-a__founder-img'
+            }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .bbe-a{
+    --bbe-a-font-heading: var(--bbe-font-heading, 'EB Garamond', Georgia, serif);
+    --bbe-a-font-body: var(--bbe-font-body, 'Figtree', system-ui, sans-serif);
+    --bbe-a-weight-regular: 400;
+    --bbe-a-weight-semibold: 600;
+    font-family: var(--bbe-a-font-body);
+    font-weight: var(--bbe-a-weight-regular);
+    color:{{ section.settings.text_color }};
+    background:{{ section.settings.background_color }};
+    overflow:hidden
+  }
+  #shopify-section-{{ section.id }} .bbe-a__shell{width:min({{ section.settings.section_max_width }}px,100%);margin:0 auto;padding:0 clamp(16px,2vw,32px)}
+  #shopify-section-{{ section.id }} .bbe-a__title{margin:0 0 18px;font-family:var(--bbe-a-font-heading);font-weight:600;font-size:clamp(32px,5vw,80px)}
+  #shopify-section-{{ section.id }} .bbe-a__btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px;border-radius:999px;border:2px solid #111;text-transform:uppercase;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);text-decoration:none;color:#111;background:transparent}
+  #shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--primary,#shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--header{background:#111;color:#fff}
+  #shopify-section-{{ section.id }} .bbe-a__promo{padding:8px 0}
+  #shopify-section-{{ section.id }} .bbe-a__promo--dark{background:#111;color:#fff}
+  #shopify-section-{{ section.id }} .bbe-a__promo--light{background:#fff;color:#111}
+  #shopify-section-{{ section.id }} .bbe-a__promo-shell{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px}
+  #shopify-section-{{ section.id }} .bbe-a__promo-item a{color:inherit;text-decoration:none}
+  #shopify-section-{{ section.id }} .bbe-a__header{padding:14px 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.08)}
+  #shopify-section-{{ section.id }} .bbe-a__header-shell{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px}
+  #shopify-section-{{ section.id }} .bbe-a__nav ul{list-style:none;margin:0;padding:0;display:flex;gap:16px}
+  #shopify-section-{{ section.id }} .bbe-a__nav a{color:inherit;text-decoration:none;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);font-size:14px}
+  #shopify-section-{{ section.id }} .bbe-a__hero{padding:34px 0 48px;background:linear-gradient(90deg,#f7efe2 0%,#d7bfa1 100%)}
+  #shopify-section-{{ section.id }} .bbe-a__hero .bbe-a__shell{padding-inline:clamp(22px,5.7vw,112px)}
+  #shopify-section-{{ section.id }} .bbe-a__hero-shell{display:grid;gap:34px;align-items:center;margin-top:90px;margin-left:15px;}
+  #shopify-section-{{ section.id }} .bbe-a__hero-copy h1{margin:0 0 20px;font-family:var(--bbe-a-font-heading);font-weight:600;font-size:clamp(50px,8vw,79px);line-height:1.2}
+  #shopify-section-{{ section.id }} .bbe-a__hero-sub{margin:0 0 26px;font-size:clamp(22px,3.2vw,34px);line-height:1.24}
+  #shopify-section-{{ section.id }} .bbe-a__hero-bullets{margin-left:20px;padding:0;list-style:none;display:grid;gap:10px;font-size:clamp(24px,1.8vw,50px);line-height:1.15}
+  #shopify-section-{{ section.id }} .bbe-a__hero-bullets li{display:flex;align-items:center;gap:14px}
+  #shopify-section-{{ section.id }} .bbe-a__bullet-mark{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:2px solid #111;border-radius:50%;font-size:15px;line-height:1;flex:0 0 30px;margin-top:0;background-color:white;}
+  #shopify-section-{{ section.id }} .bbe-a__hero-actions{margin-top:44px;display:flex;gap:18px;flex-wrap:wrap}
+  #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn{width:100%;font-size:25px;line-height:1;white-space:nowrap}
+  #shopify-section-{{ section.id }} .bbe-a__hero-media{position:relative;display:flex;align-items:flex-end;min-height:360px}
+  #shopify-section-{{ section.id }} .bbe-a__badge-wrap{position:absolute;top:8px;left:-20px;width:172px;height:172px;z-index:2}
+  #shopify-section-{{ section.id }} .bbe-a__badge-ring{position:absolute;inset:0;width:100%;height:100%}
+  #shopify-section-{{ section.id }} .bbe-a__badge-ring text{font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);font-size:11px;letter-spacing:1.4px;fill:#111}
+  #shopify-section-{{ section.id }} .bbe-a__badge{position:absolute;inset:18px;width:136px;height:136px;border-radius:50%;background:#d9735c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:76px;line-height:1;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-regular)}
+  #shopify-section-{{ section.id }} .bbe-a__hero-image{width:100%;height:auto;display:block}
+  #shopify-section-{{ section.id }} .bbe-a__placeholder{min-height:320px;background:rgba(255,255,255,.35);border-radius:12px}
+  #shopify-section-{{ section.id }} .bbe-a__reviews{position:relative;padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.reviews_background_color }};min-height:620px}
+  #shopify-section-{{ section.id }} .bbe-a__reviews-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #shopify-section-{{ section.id }} .bbe-a__reviews-card{position:relative;z-index:1;max-width:1680px;margin:0 auto;padding:clamp(24px,3vw,52px);text-align:center;border-radius:{{ section.settings.reviews_card_radius }}px;background:rgba(255,255,255,{{ section.settings.reviews_card_opacity | times: 0.01 }});backdrop-filter:blur({{ section.settings.reviews_card_blur }}px);height:650px;}
+  #shopify-section-{{ section.id }} .bbe-a__stars{display:flex;justify-content:center;align-items:center;gap:12px;margin:16px 0 28px}
+  #shopify-section-{{ section.id }} .bbe-a__star{display:inline-flex;width:46px;height:46px}
+  #shopify-section-{{ section.id }} .bbe-a__star svg{display:block;width:100%;height:100%;fill:#c4c4c4}
+  #shopify-section-{{ section.id }} .bbe-a__star.is-filled svg{fill:#111}
+  #shopify-section-{{ section.id }} .bbe-a__review{display:none}#shopify-section-{{ section.id }} .bbe-a__review.is-active{display:block}
+  #shopify-section-{{ section.id }} .bbe-a__review h3{margin:0;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);font-size:clamp(26px,4vw,50px)}#shopify-section-{{ section.id }} .bbe-a__review p{margin:10px auto 0;max-width:1320px;line-height:1.2;font-size:35px;}
+  #shopify-section-{{ section.id }} .bbe-a__review-footer{margin-top:40px;display:flex;gap:50px;justify-content:center;align-items:center;flex-wrap:wrap}
+  #shopify-section-{{ section.id }} .bbe-a__review-author{font-family:var(--bbe-a-font-body);font-size:26px;font-weight:var(--bbe-a-weight-semibold);line-height:1;text-transform:uppercase;}
+  #shopify-section-{{ section.id }} .bbe-a__review-verified{background:#f8f0e3;border-radius:999px;padding:17px 54px;text-transform:uppercase;font-family:var(--bbe-a-font-body);font-size:16px;font-weight:var(--bbe-a-weight-semibold);line-height:1}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:64px;height:64px;padding:0;display:grid;place-items:center;border:none;background:transparent}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn--prev{left:80px}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn--next{right:80px}
+  #shopify-section-{{ section.id }} .bbe-a__nav-icon{display:block;width:30px;height:30px;border-top:5px solid #111;border-right:5px solid #111}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn--prev .bbe-a__nav-icon{transform:rotate(-135deg)}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn--next .bbe-a__nav-icon{transform:rotate(45deg)}
+  #shopify-section-{{ section.id }} .bbe-a__nav-btn:disabled{opacity:.3}
+  #shopify-section-{{ section.id }} .bbe-a__strip{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.ugc_background_color }};}
+  #shopify-section-{{ section.id }} .bbe-a__actions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px}
+  #shopify-section-{{ section.id }} .bbe-a__actions button{width:40px;height:40px;border-radius:999px;border:1px solid #111;background:#fff}
+  #shopify-section-{{ section.id }} .bbe-a__viewport{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #shopify-section-{{ section.id }} .bbe-a__viewport::-webkit-scrollbar{display:none}
+  #shopify-section-{{ section.id }} .bbe-a__track{list-style:none;margin:0;padding:0;display:flex;gap:{{ section.settings.ugc_gap }}px}
+  #shopify-section-{{ section.id }} .bbe-a__tile{flex:0 0 auto;scroll-snap-align:start}
+  #shopify-section-{{ section.id }} .bbe-a__media{display:block;width:330px;height:420px;border-radius:22px;overflow:hidden;background:#ddd6c8}
+  #shopify-section-{{ section.id }} .bbe-a__img{display:block;width:330px;height:420px;object-fit:cover}
+  #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__viewport{padding-inline:0}
+  #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__track{width:max-content;margin-inline:auto}
+  #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__media{border-radius:26px}
+  #shopify-section-{{ section.id }} .bbe-a__before-after{padding:78px 0 0;background:{{ section.settings.before_after_background_color }}}
+  #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__title{margin:0 auto 20px;text-align:center;font-size:clamp(52px,5.4vw,104px);line-height:1.02}
+  #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__sub{margin:0 auto 56px;max-width:1200px;text-align:center;font-family:var(--bbe-a-font-body);font-size:clamp(22px,2.4vw,52px);font-weight:var(--bbe-a-weight-regular);line-height:1.22}
+  #shopify-section-{{ section.id }} .bbe-a__sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  #shopify-section-{{ section.id }} .bbe-a__ba{position:relative;border-radius:38px 38px 0 0;overflow:hidden;aspect-ratio:1728/640;background:#ede5db;cursor:ew-resize;touch-action:none;user-select:none}
+  #shopify-section-{{ section.id }} .bbe-a__ba-pane{position:absolute;inset:0}
+  #shopify-section-{{ section.id }} .bbe-a__ba-pane--after{clip-path:inset(0 0 0 50%)}
+  #shopify-section-{{ section.id }} .bbe-a__ba-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  #shopify-section-{{ section.id }} .bbe-a__ba-handle{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:74px;background:transparent;opacity:.98;cursor:ew-resize;touch-action:none;z-index:6}
+  #shopify-section-{{ section.id }} .bbe-a__ba-handle-line{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:8px;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:136px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob-grip{width:18px;height:60px;background:
+    linear-gradient(#9d9d9d,#9d9d9d) left center/2px 60px no-repeat,
+    linear-gradient(#9d9d9d,#9d9d9d) center center/2px 60px no-repeat,
+    linear-gradient(#9d9d9d,#9d9d9d) right center/2px 60px no-repeat}
+  #shopify-section-{{ section.id }} .bbe-a__ba-handle-line,
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob,
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob-grip{pointer-events:none}
+  #shopify-section-{{ section.id }} .bbe-a__ba-handle:focus-visible{outline:2px solid #111;outline-offset:3px}
+  #shopify-section-{{ section.id }} .bbe-a__ba.is-dragging .bbe-a__ba-handle{opacity:1}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.ingredients_background_color }}}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{display:grid;gap:14px}
+  #shopify-section-{{ section.id }} .bbe-a__chips{display:grid;gap:10px}
+  #shopify-section-{{ section.id }} .bbe-a__chip{background:rgba(255,255,255,.72);border-radius:16px;padding:12px}
+  #shopify-section-{{ section.id }} .bbe-a__chip h3{margin:0}#shopify-section-{{ section.id }} .bbe-a__chip p{margin:6px 0 0;opacity:.82}
+  #shopify-section-{{ section.id }} .bbe-a__center{text-align:center}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-image{width:min(360px,70vw);display:block;margin:0 auto}
+  #shopify-section-{{ section.id }} .bbe-a__testi{position:relative;width:280px;aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:#ede5db}
+  #shopify-section-{{ section.id }} .bbe-a__testi-img,#shopify-section-{{ section.id }} .bbe-a__testi-video{width:100%;height:100%;object-fit:cover;display:block}
+  #shopify-section-{{ section.id }} .bbe-a__play{position:absolute;inset:0;margin:auto;width:50px;height:50px;border-radius:50%;border:none;background:rgba(255,255,255,.9)}
+  #shopify-section-{{ section.id }} .bbe-a__cap{margin:8px 0 0;text-align:center;opacity:.76}
+  #shopify-section-{{ section.id }} .bbe-a__faq{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.faq_background_color }}}
+  #shopify-section-{{ section.id }} .bbe-a__faq-shell{display:grid;gap:0}
+  #shopify-section-{{ section.id }} .bbe-a__faq-img{width:100%;height:100%;object-fit:cover;display:block}
+  #shopify-section-{{ section.id }} .bbe-a__faq-copy{padding:clamp(20px,4vw,42px);background:#fff}
+  #shopify-section-{{ section.id }} .bbe-a__faq-copy ul{list-style:none;margin:0;padding:0}
+  #shopify-section-{{ section.id }} .bbe-a__faq-item{border-bottom:1px solid rgba(0,0,0,.2)}#shopify-section-{{ section.id }} .bbe-a__faq-item:first-child{border-top:1px solid rgba(0,0,0,.2)}
+  #shopify-section-{{ section.id }} .bbe-a__faq-item button{width:100%;text-align:left;background:transparent;border:none;padding:16px 0;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold)}
+  #shopify-section-{{ section.id }} .bbe-a__faq-item [data-a-faq-answer]{padding-bottom:16px}
+  #shopify-section-{{ section.id }} .bbe-a__founder{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.founder_background_color }}}
+  #shopify-section-{{ section.id }} .bbe-a__founder-shell{display:grid;gap:18px;align-items:center}
+  #shopify-section-{{ section.id }} .bbe-a__founder-img{width:100%;display:block}
+  @media(min-width:750px){
+    #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn{width:auto}
+    #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn--primary{min-width:370px;height:80px;padding-inline:34px}
+    #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn--secondary{min-width:345px;height:80px;padding-inline:34px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{grid-template-columns:1fr minmax(280px,360px) 1fr;align-items:center}
+    #shopify-section-{{ section.id }} .bbe-a__faq-shell,#shopify-section-{{ section.id }} .bbe-a__founder-shell{grid-template-columns:1fr 1fr}
+  }
+  @media(min-width:990px){
+    #shopify-section-{{ section.id }} .bbe-a__hero{min-height:820px;padding:0}
+    #shopify-section-{{ section.id }} .bbe-a__hero-shell{grid-template-columns:minmax(640px,1fr) minmax(620px,1fr);gap:54px;align-items:flex-end}
+    #shopify-section-{{ section.id }} .bbe-a__hero-copy{max-width:860px;padding-bottom:66px}
+    #shopify-section-{{ section.id }} .bbe-a__hero-sub{max-width:820px}
+    #shopify-section-{{ section.id }} .bbe-a__hero-bullets{max-width:800px}
+    #shopify-section-{{ section.id }} .bbe-a__hero-media{min-height:684px}
+    #shopify-section-{{ section.id }} .bbe-a__hero-image{height:684px;object-fit:cover;object-position:center center}
+    #shopify-section-{{ section.id }} .bbe-a__badge-wrap{top:26px;left:-34px}
+    #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__track{justify-content:center}
+    #shopify-section-{{ section.id }} .bbe-a__before-after{padding-top:96px}
+    #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__sub{margin-bottom:68px}
+  }
+</style>
+
+<script>
+  (function () {
+    var section = document.getElementById('bbe-assessment-{{ section.id }}');
+    if (!section) return;
+
+    function initCarousel(selector, slideSelector, prevSelector, nextSelector, autoplay, speed) {
+      var wrap = section.querySelector(selector);
+      if (!wrap) return;
+      var slides = Array.prototype.slice.call(wrap.querySelectorAll(slideSelector));
+      var prev = wrap.querySelector(prevSelector);
+      var next = wrap.querySelector(nextSelector);
+      var idx = 0;
+      var timer = null;
+      if (!slides.length) return;
+      function render(announce) {
+        slides.forEach(function (slide, i) {
+          var active = i === idx;
+          slide.classList.toggle('is-active', active);
+          slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        });
+        if (wrap.hasAttribute('aria-live')) wrap.setAttribute('aria-live', announce ? 'polite' : 'off');
+        if (prev) prev.disabled = slides.length <= 1;
+        if (next) next.disabled = slides.length <= 1;
+      }
+      function go(target, announce) {
+        idx = (target + slides.length) % slides.length;
+        render(announce);
+      }
+      function stop() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+      function start() {
+        if (!autoplay || slides.length <= 1) return;
+        stop();
+        timer = setInterval(function () {
+          go(idx + 1, false);
+        }, speed);
+      }
+      if (prev)
+        prev.addEventListener('click', function () {
+          stop();
+          go(idx - 1, true);
+          start();
+        });
+      if (next)
+        next.addEventListener('click', function () {
+          stop();
+          go(idx + 1, true);
+          start();
+        });
+      wrap.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowLeft') {
+          stop();
+          go(idx - 1, true);
+          start();
+        }
+        if (event.key === 'ArrowRight') {
+          stop();
+          go(idx + 1, true);
+          start();
+        }
+      });
+      wrap.addEventListener('mouseenter', stop);
+      wrap.addEventListener('mouseleave', start);
+      wrap.addEventListener('focusin', stop);
+      wrap.addEventListener('focusout', function (event) {
+        if (!wrap.contains(event.relatedTarget)) start();
+      });
+      render(false);
+      start();
+    }
+
+    function initStrip(selector, viewportSelector, prevSelector, nextSelector, step) {
+      var module = section.querySelector(selector);
+      if (!module) return;
+      var viewport = module.querySelector(viewportSelector);
+      var prev = module.querySelector(prevSelector);
+      var next = module.querySelector(nextSelector);
+      if (!viewport) return;
+      function update() {
+        if (!prev || !next) return;
+        var max = viewport.scrollWidth - viewport.clientWidth;
+        prev.disabled = viewport.scrollLeft <= 1;
+        next.disabled = viewport.scrollLeft >= max - 1;
+      }
+      if (prev)
+        prev.addEventListener('click', function () {
+          viewport.scrollBy({ left: step * -1, behavior: 'smooth' });
+        });
+      if (next)
+        next.addEventListener('click', function () {
+          viewport.scrollBy({ left: step, behavior: 'smooth' });
+        });
+      viewport.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    }
+
+    function initBeforeAfter() {
+      var slider = section.querySelector('[data-a-before-after]');
+      if (!slider) return;
+      var handle = slider.querySelector('[data-a-before-after-handle]');
+      var after = slider.querySelector('[data-a-before-after-pane]');
+      if (!handle || !after) return;
+      var beforeLabel = slider.getAttribute('data-before-label') || 'Before';
+      var afterLabel = slider.getAttribute('data-after-label') || 'After';
+      var dragging = false;
+      var activePointerId = null;
+      var pos = 50;
+      var rafToken = null;
+      var pendingPos = 50;
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+      function setAria(pct) {
+        var beforePct = Math.round(pct);
+        var afterPct = 100 - beforePct;
+        handle.setAttribute('aria-valuenow', beforePct);
+        handle.setAttribute('aria-valuetext', beforeLabel + ' ' + beforePct + '%, ' + afterLabel + ' ' + afterPct + '%');
+      }
+      function setPos(pct) {
+        pos = clamp(pct, 0, 100);
+        after.style.clipPath = 'inset(0 0 0 ' + pos + '%)';
+        handle.style.left = pos + '%';
+        setAria(pos);
+      }
+      function queueSetPos(pct) {
+        pendingPos = pct;
+        if (rafToken) return;
+        rafToken = requestAnimationFrame(function () {
+          setPos(pendingPos);
+          rafToken = null;
+        });
+      }
+      function fromClientX(clientX) {
+        var rect = slider.getBoundingClientRect();
+        if (!rect.width) return pos;
+        return ((clientX - rect.left) / rect.width) * 100;
+      }
+      function onPointerMove(event) {
+        if (!dragging) return;
+        if (activePointerId !== null && event.pointerId !== activePointerId) return;
+        queueSetPos(fromClientX(event.clientX));
+      }
+      function stopDrag(event) {
+        if (!dragging) return;
+        if (event && activePointerId !== null && event.pointerId !== undefined && event.pointerId !== activePointerId) return;
+        if (slider.releasePointerCapture && activePointerId !== null) {
+          try {
+            slider.releasePointerCapture(activePointerId);
+          } catch (error) {}
+        }
+        dragging = false;
+        activePointerId = null;
+        slider.classList.remove('is-dragging');
+      }
+      slider.addEventListener('pointerdown', function (event) {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        dragging = true;
+        activePointerId = event.pointerId;
+        slider.classList.add('is-dragging');
+        if (slider.setPointerCapture) slider.setPointerCapture(activePointerId);
+        queueSetPos(fromClientX(event.clientX));
+        event.preventDefault();
+      });
+      slider.addEventListener('pointermove', onPointerMove, { passive: true });
+      slider.addEventListener('pointerup', stopDrag);
+      slider.addEventListener('pointercancel', stopDrag);
+      slider.addEventListener('lostpointercapture', stopDrag);
+
+      if (!window.PointerEvent) {
+        slider.addEventListener('mousedown', function (event) {
+          if (event.button !== 0) return;
+          dragging = true;
+          slider.classList.add('is-dragging');
+          queueSetPos(fromClientX(event.clientX));
+          event.preventDefault();
+        });
+        window.addEventListener(
+          'mousemove',
+          function (event) {
+            if (!dragging) return;
+            queueSetPos(fromClientX(event.clientX));
+          },
+          { passive: true }
+        );
+        window.addEventListener('mouseup', stopDrag);
+        slider.addEventListener(
+          'touchstart',
+          function (event) {
+            if (!event.touches || !event.touches.length) return;
+            dragging = true;
+            slider.classList.add('is-dragging');
+            queueSetPos(fromClientX(event.touches[0].clientX));
+            event.preventDefault();
+          },
+          { passive: false }
+        );
+        slider.addEventListener(
+          'touchmove',
+          function (event) {
+            if (!dragging || !event.touches || !event.touches.length) return;
+            queueSetPos(fromClientX(event.touches[0].clientX));
+            event.preventDefault();
+          },
+          { passive: false }
+        );
+        window.addEventListener('touchend', stopDrag, { passive: true });
+        window.addEventListener('touchcancel', stopDrag, { passive: true });
+      }
+      handle.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          queueSetPos(pos - 2);
+        }
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          queueSetPos(pos + 2);
+        }
+        if (event.key === 'Home') {
+          event.preventDefault();
+          queueSetPos(0);
+        }
+        if (event.key === 'End') {
+          event.preventDefault();
+          queueSetPos(100);
+        }
+      });
+      setPos(50);
+    }
+
+    function initFaq() {
+      var faq = section.querySelector('[data-a-faq]');
+      if (!faq) return;
+      var single = faq.getAttribute('data-single-open') === 'true';
+      var items = Array.prototype.slice.call(faq.querySelectorAll('.bbe-a__faq-item'));
+      if (!items.length) return;
+      function closeAll() {
+        items.forEach(function (item) {
+          var btn = item.querySelector('[data-a-faq-btn]');
+          var ans = item.querySelector('[data-a-faq-answer]');
+          if (!btn || !ans) return;
+          btn.setAttribute('aria-expanded', 'false');
+          ans.hidden = true;
+        });
+      }
+      items.forEach(function (item) {
+        var btn = item.querySelector('[data-a-faq-btn]');
+        var ans = item.querySelector('[data-a-faq-answer]');
+        if (!btn || !ans) return;
+        btn.addEventListener('click', function () {
+          var open = btn.getAttribute('aria-expanded') === 'true';
+          if (single) closeAll();
+          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+          ans.hidden = open;
+        });
+      });
+    }
+
+    function initVideoButtons() {
+      var buttons = section.querySelectorAll('[data-a-play-btn]');
+      buttons.forEach(function (button) {
+        var parent = button.closest('.bbe-a__testi');
+        if (!parent) return;
+        var video = parent.querySelector('video');
+        if (!video) return;
+        button.addEventListener('click', function () {
+          if (video.paused) {
+            video.play();
+            button.innerHTML = '&#10074;&#10074;';
+            button.setAttribute('aria-label', 'Pause video');
+          } else {
+            video.pause();
+            button.innerHTML = '&#9658;';
+            button.setAttribute('aria-label', 'Play video');
+          }
+        });
+      });
+    }
+
+    var reviews = section.querySelector('[data-a-reviews]');
+    initCarousel(
+      '[data-a-reviews]',
+      '[data-a-reviews-slide]',
+      '[data-a-reviews-prev]',
+      '[data-a-reviews-next]',
+      reviews ? reviews.getAttribute('data-autoplay') === 'true' : false,
+      reviews ? parseInt(reviews.getAttribute('data-speed') || '5000', 10) : 5000
+    );
+    initStrip('[data-a-ugc]', '[data-a-ugc-viewport]', '[data-a-ugc-prev]', '[data-a-ugc-next]', 344);
+    initStrip(
+      '[data-a-testimonials]',
+      '[data-a-testimonials-viewport]',
+      '[data-a-testimonials-prev]',
+      '[data-a-testimonials-next]',
+      300
+    );
+    initBeforeAfter();
+    initFaq();
+    initVideoButtons();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BBE Assessment",
+  "tag": "section",
+  "class": "bbe-assessment-section",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Global controls"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "label": "Section max width",
+      "min": 1200,
+      "max": 2200,
+      "step": 20,
+      "unit": "px",
+      "default": 1900
+    },
+    {
+      "type": "range",
+      "id": "content_padding_y",
+      "label": "Section vertical padding",
+      "min": 0,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Base background color",
+      "default": "#f2e7d3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Base text color",
+      "default": "#111111"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "solid",
+      "options": [
+        { "value": "solid", "label": "Solid primary" },
+        { "value": "outline", "label": "Outline primary" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Module visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_bar",
+      "label": "Show promo bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header_row",
+      "label": "Show header row",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show hero",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Show reviews panel",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ugc_strip",
+      "label": "Show UGC strip",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_before_after",
+      "label": "Show before/after module",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ingredients",
+      "label": "Show ingredients module",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_testimonials",
+      "label": "Show testimonials module",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Show FAQ module",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_founder",
+      "label": "Show founder module",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Promo bar"
+    },
+    {
+      "type": "select",
+      "id": "promo_color_scheme",
+      "label": "Promo color scheme",
+      "default": "dark",
+      "options": [
+        { "value": "dark", "label": "Dark" },
+        { "value": "light", "label": "Light" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Header row"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "header_logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 280,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "text",
+      "id": "header_nav_link_1_text",
+      "label": "Navigation link 1 text",
+      "default": "SHOP ALL"
+    },
+    {
+      "type": "url",
+      "id": "header_nav_link_1_url",
+      "label": "Navigation link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "header_nav_link_2_text",
+      "label": "Navigation link 2 text",
+      "default": "BEST SELLERS"
+    },
+    {
+      "type": "url",
+      "id": "header_nav_link_2_url",
+      "label": "Navigation link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "header_cta_text",
+      "label": "Header CTA text",
+      "default": "START MY FREE TRIAL"
+    },
+    {
+      "type": "url",
+      "id": "header_cta_url",
+      "label": "Header CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_headline",
+      "label": "Headline",
+      "default": "Try It. Love It. Or Pay Nothing."
+    },
+    {
+      "type": "text",
+      "id": "hero_subheadline",
+      "label": "Subheadline",
+      "default": "Only pay $40 after 7 days (if you decide to keep it)."
+    },
+    {
+      "type": "text",
+      "id": "hero_primary_cta_text",
+      "label": "Primary CTA text",
+      "default": "START MY FREE TRIAL"
+    },
+    {
+      "type": "url",
+      "id": "hero_primary_cta_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "text",
+      "id": "hero_secondary_cta_text",
+      "label": "Secondary CTA text",
+      "default": "SEE HOW IT WORKS"
+    },
+    {
+      "type": "url",
+      "id": "hero_secondary_cta_url",
+      "label": "Secondary CTA URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_media_image",
+      "label": "Hero media image"
+    },
+    {
+      "type": "checkbox",
+      "id": "hero_show_badge",
+      "label": "Show hero badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hero_badge_line",
+      "label": "Hero badge line",
+      "default": "Get our 2-pack today for $0."
+    },
+    {
+      "type": "text",
+      "id": "hero_badge_highlight",
+      "label": "Hero badge highlight",
+      "default": "$0"
+    },
+    {
+      "type": "header",
+      "content": "Reviews panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "reviews_background_image",
+      "label": "Reviews background image"
+    },
+    {
+      "type": "color",
+      "id": "reviews_background_color",
+      "label": "Reviews fallback background",
+      "default": "#d9d3c8"
+    },
+    {
+      "type": "range",
+      "id": "reviews_card_radius",
+      "label": "Reviews card corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "reviews_card_blur",
+      "label": "Reviews card blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "reviews_card_opacity",
+      "label": "Reviews card opacity",
+      "min": 40,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 86
+    },
+    {
+      "type": "text",
+      "id": "reviews_headline",
+      "label": "Reviews headline",
+      "default": "Over 100K reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_headline_emphasis",
+      "label": "Reviews headline emphasis",
+      "default": "(and counting)."
+    },
+    {
+      "type": "range",
+      "id": "reviews_star_rating",
+      "label": "Star rating",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "reviews_verified_label",
+      "label": "Verified label",
+      "default": "VERIFIED PURCHASE"
+    },
+    {
+      "type": "checkbox",
+      "id": "reviews_autoplay",
+      "label": "Autoplay reviews",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "reviews_autoplay_seconds",
+      "label": "Autoplay speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "UGC strip"
+    },
+    {
+      "type": "color",
+      "id": "ugc_background_color",
+      "label": "UGC background",
+      "default": "#ebebeb"
+    },
+    {
+      "type": "range",
+      "id": "ugc_gap",
+      "label": "Tile gap",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "ugc_show_arrows_desktop",
+      "label": "Show UGC arrows on desktop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Before / after"
+    },
+    {
+      "type": "color",
+      "id": "before_after_background_color",
+      "label": "Before/after background",
+      "default": "#ece3d4"
+    },
+    {
+      "type": "text",
+      "id": "before_after_heading",
+      "label": "Before/after heading",
+      "default": "See The Difference"
+    },
+    {
+      "type": "text",
+      "id": "before_after_subheading",
+      "label": "Before/after subheading",
+      "default": "More hydration, neutralized odors, and better for the planet."
+    },
+    {
+      "type": "image_picker",
+      "id": "before_after_before_image",
+      "label": "Before image"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_after_after_image",
+      "label": "After image"
+    },
+    {
+      "type": "text",
+      "id": "before_after_before_label",
+      "label": "Before label",
+      "default": "Before"
+    },
+    {
+      "type": "text",
+      "id": "before_after_after_label",
+      "label": "After label",
+      "default": "After"
+    },
+    {
+      "type": "header",
+      "content": "Ingredients"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_background_color",
+      "label": "Ingredients background",
+      "default": "#f0e5d0"
+    },
+    {
+      "type": "text",
+      "id": "ingredients_heading",
+      "label": "Ingredients heading",
+      "default": "Clean Ingredients"
+    },
+    {
+      "type": "image_picker",
+      "id": "ingredients_product_image",
+      "label": "Ingredients product image"
+    },
+    {
+      "type": "text",
+      "id": "ingredients_tagline_1",
+      "label": "Tagline line 1",
+      "default": "No aluminum. No parabens."
+    },
+    {
+      "type": "text",
+      "id": "ingredients_tagline_2",
+      "label": "Tagline line 2",
+      "default": "No synthetic antibacterials."
+    },
+    {
+      "type": "text",
+      "id": "ingredients_button_text",
+      "label": "Ingredients button text",
+      "default": "See full ingredients"
+    },
+    {
+      "type": "url",
+      "id": "ingredients_button_url",
+      "label": "Ingredients button URL"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials strip"
+    },
+    {
+      "type": "text",
+      "id": "testimonials_heading",
+      "label": "Testimonials heading",
+      "default": "What They Are Saying"
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonials_show_arrows_desktop",
+      "label": "Show testimonial arrows on desktop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "color",
+      "id": "faq_background_color",
+      "label": "FAQ background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ heading",
+      "default": "Still have questions?"
+    },
+    {
+      "type": "image_picker",
+      "id": "faq_image",
+      "label": "FAQ image"
+    },
+    {
+      "type": "checkbox",
+      "id": "faq_single_open",
+      "label": "Allow one FAQ open at a time",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Founder"
+    },
+    {
+      "type": "color",
+      "id": "founder_background_color",
+      "label": "Founder background",
+      "default": "#ece3d4"
+    },
+    {
+      "type": "text",
+      "id": "founder_heading",
+      "label": "Founder heading",
+      "default": "Fresh that actually works"
+    },
+    {
+      "type": "richtext",
+      "id": "founder_body",
+      "label": "Founder body",
+      "default": "<p>I created this formula because I was tired of choosing between products that worked and products that were good for my body. You deserve both.</p>"
+    },
+    {
+      "type": "text",
+      "id": "founder_name",
+      "label": "Founder name",
+      "default": "- Sarah, Founder"
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Founder image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_message",
+      "name": "Promo message",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Limited-Time Offer:" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Try Today for $0" },
+        { "type": "url", "id": "link_url", "label": "Link URL" }
+      ]
+    },
+    {
+      "type": "hero_bullet",
+      "name": "Hero bullet",
+      "limit": 6,
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Ships today" }]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review title",
+          "default": "This deodorant is absolute gold!"
+        },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Natural protection that works." },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "I am always trying to find things that are natural and actually work so I don't have any hormonal disruption. So many natural deodorants have not worked for me, but this stuff actually really works. No smell even after 24 hours. Love it!"
+        },
+        { "type": "text", "id": "author", "label": "Author", "default": "Monica" },
+        { "type": "text", "id": "verified_label", "label": "Verified label override", "default": "VERIFIED PURCHASE" }
+      ]
+    },
+    {
+      "type": "ugc_tile",
+      "name": "UGC tile",
+      "limit": 12,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt_text", "label": "Alt text", "default": "UGC image" },
+        { "type": "url", "id": "link_url", "label": "Link URL" }
+      ]
+    },
+    {
+      "type": "ingredient_chip",
+      "name": "Ingredient chip",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Ingredient name" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Ingredient benefit text." }
+      ]
+    },
+    {
+      "type": "testimonial_tile",
+      "name": "Testimonial tile",
+      "limit": 12,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "video_url", "label": "MP4 URL (optional)" },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "Customer story" }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "limit": 12,
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How long does shipping take?" },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Most orders ship within 1-2 business days and arrive within 5-7 business days.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BBE Assessment",
+      "blocks": [
+        { "type": "promo_message" },
+        { "type": "promo_message" },
+        { "type": "hero_bullet" },
+        { "type": "hero_bullet" },
+        { "type": "hero_bullet" },
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "ugc_tile" },
+        { "type": "ugc_tile" },
+        { "type": "ugc_tile" },
+        { "type": "ugc_tile" },
+        { "type": "ugc_tile" },
+        { "type": "ingredient_chip" },
+        { "type": "ingredient_chip" },
+        { "type": "ingredient_chip" },
+        { "type": "ingredient_chip" },
+        { "type": "testimonial_tile" },
+        { "type": "testimonial_tile" },
+        { "type": "testimonial_tile" },
+        { "type": "testimonial_tile" },
+        { "type": "faq_item" },
+        { "type": "faq_item" },
+        { "type": "faq_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -2,3 +2,9 @@ MatchingTranslations:
   enabled: false
 TemplateLength:
   enabled: false
+AssetUrlFilters:
+  enabled: false
+UnknownFilter:
+  enabled: false
+MissingAsset:
+  enabled: false

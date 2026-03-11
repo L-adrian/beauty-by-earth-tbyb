@@ -124,11 +124,12 @@
               <svg
                 class="bbe-a__badge-ring"
                 viewBox="0 0 140 140"
+                overflow="visible"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
               >
                 <defs>
-                  <path id="bbe-a-badge-path-{{ section.id }}" d="M 18,70 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" />
+                  <path id="bbe-a-badge-path-{{ section.id }}" d="M 9,70 a 61,61 0 1,1 122,0 a 61,61 0 1,1 -122,0" />
                 </defs>
                 <text>
                   <textPath href="#bbe-a-badge-path-{{ section.id }}" startOffset="50%" text-anchor="middle">{{ section.settings.hero_badge_line }}</textPath>
@@ -300,8 +301,8 @@
           <p class="bbe-a__sub">{{ section.settings.before_after_subheading }}</p>
         {%- endif -%}
         <p class="bbe-a__sr-only" id="bbe-a-ba-help-{{ section.id }}">
-          Drag the slider left or right to compare {{ before_label }} and {{ after_label }} images.
-          You can also use the left and right arrow keys while focused on the slider handle.
+          Drag the slider left or right to compare {{ before_label }} and {{ after_label }} images. You can also use the
+          left and right arrow keys while focused on the slider handle.
         </p>
         <div
           class="bbe-a__ba"
@@ -322,7 +323,11 @@
               {{ 'image' | placeholder_svg_tag: 'bbe-a__ba-img bbe-a__ba-img--placeholder' }}
             {%- endif -%}
           </div>
-          <div class="bbe-a__ba-pane bbe-a__ba-pane--after" data-a-before-after-pane id="bbe-a-after-pane-{{ section.id }}">
+          <div
+            class="bbe-a__ba-pane bbe-a__ba-pane--after"
+            data-a-before-after-pane
+            id="bbe-a-after-pane-{{ section.id }}"
+          >
             {%- if section.settings.before_after_after_image != blank -%}
               {{
                 section.settings.before_after_after_image
@@ -358,49 +363,108 @@
   {%- endif -%}
 
   {%- if section.settings.show_ingredients -%}
+    {%- assign ingredients_button_text = section.settings.ingredients_button_text | default: 'See full ingredients' -%}
     <div class="bbe-a__ingredients">
       <div class="bbe-a__shell bbe-a__ingredients-shell">
-        <div class="bbe-a__chips">
-          {%- for block in ingredient_chips limit: 2 -%}
-            <article class="bbe-a__chip" {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title }}</h3>
-              <p>{{ block.settings.body }}</p>
-            </article>
+        <div class="bbe-a__ingredients-grid">
+          {%- for block in ingredient_chips limit: 4 -%}
+            {%- assign chip_alt = block.settings.title | default: section.settings.ingredients_heading -%}
+            {%- assign slot_class = '' -%}
+            {%- case forloop.index -%}
+              {%- when 1 -%}
+                {%- assign slot_class = 'bbe-a__ingredients-slot--top-left' -%}
+              {%- when 2 -%}
+                {%- assign slot_class = 'bbe-a__ingredients-slot--top-right' -%}
+              {%- when 3 -%}
+                {%- assign slot_class = 'bbe-a__ingredients-slot--bottom-left' -%}
+              {%- when 4 -%}
+                {%- assign slot_class = 'bbe-a__ingredients-slot--bottom-right' -%}
+            {%- endcase -%}
+            <div class="bbe-a__ingredients-slot {{ slot_class }}">
+              {%- if block.settings.link_url != blank -%}
+                <a href="{{ block.settings.link_url }}" class="bbe-a__ingredient-chip" {{ block.shopify_attributes }}>
+              {%- else -%}
+                <div class="bbe-a__ingredient-chip" {{ block.shopify_attributes }}>
+              {%- endif -%}
+              <span class="bbe-a__ingredient-chip-icon">
+                {%- if block.settings.icon != blank -%}
+                  {{
+                    block.settings.icon
+                    | image_url: width: 240, height: 240, crop: 'center'
+                    | image_tag:
+                      width: 120,
+                      height: 120,
+                      loading: 'lazy',
+                      alt: chip_alt,
+                      class: 'bbe-a__ingredient-chip-icon-image'
+                  }}
+                {%- else -%}
+                  {{
+                    'image'
+                    | placeholder_svg_tag: 'bbe-a__ingredient-chip-icon-image bbe-a__ingredient-chip-icon-image--placeholder'
+                  }}
+                {%- endif -%}
+              </span>
+              <span class="bbe-a__ingredient-chip-copy">
+                <span class="bbe-a__ingredient-chip-title">{{ block.settings.title }}</span>
+                {%- if block.settings.body != blank -%}
+                  <span class="bbe-a__ingredient-chip-body">{{ block.settings.body }}</span>
+                {%- endif -%}
+              </span>
+              {%- if block.settings.link_url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+            </div>
           {%- endfor -%}
-        </div>
-        <div class="bbe-a__center">
-          <h2 class="bbe-a__title">{{ section.settings.ingredients_heading }}</h2>
-          {%- if section.settings.ingredients_product_image != blank -%}
-            {{
-              section.settings.ingredients_product_image
-              | image_url: width: 540
-              | image_tag: loading: 'lazy', alt: section.settings.ingredients_heading, class: 'bbe-a__ingredients-image'
-            }}
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'bbe-a__ingredients-image bbe-a__ingredients-image--placeholder' }}
-          {%- endif -%}
-          {%- if section.settings.ingredients_tagline_1 != blank -%}
-            <p>{{ section.settings.ingredients_tagline_1 }}</p>
-          {%- endif -%}
-          {%- if section.settings.ingredients_tagline_2 != blank -%}
-            <p>{{ section.settings.ingredients_tagline_2 }}</p>
-          {%- endif -%}
-          {%- if section.settings.ingredients_button_text != blank -%}
-            <a
-              href="{{ section.settings.ingredients_button_url | default: '#' }}"
-              class="bbe-a__btn bbe-a__btn--secondary"
+
+          <div class="bbe-a__ingredients-copy bbe-a__ingredients-copy--left">
+            {%- if section.settings.ingredients_heading != blank -%}
+              <h2 class="bbe-a__ingredients-heading">{{ section.settings.ingredients_heading }}</h2>
+            {%- endif -%}
+            {%- if section.settings.ingredients_tagline_1 != blank -%}
+              <p class="bbe-a__ingredients-tagline bbe-a__ingredients-tagline--left">
+                {{ section.settings.ingredients_tagline_1 }}
+              </p>
+            {%- endif -%}
+          </div>
+
+          <div class="bbe-a__ingredients-center">
+            <svg
+              class="bbe-a__ingredients-ring"
+              viewBox="0 0 560 560"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
             >
-              {{- section.settings.ingredients_button_text -}}
+              <circle cx="280" cy="280" r="279.5" />
+            </svg>
+            <div class="bbe-a__ingredients-product">
+              {%- if section.settings.ingredients_product_image != blank -%}
+                {{
+                  section.settings.ingredients_product_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    widths: '240,320,420,540,720,900,1200',
+                    sizes: '(max-width: 989px) min(65vw, 420px), 360px',
+                    loading: 'lazy',
+                    alt: section.settings.ingredients_heading,
+                    class: 'bbe-a__ingredients-image'
+                }}
+              {%- else -%}
+                {{
+                  'product-1'
+                  | placeholder_svg_tag: 'bbe-a__ingredients-image bbe-a__ingredients-image--placeholder'
+                }}
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="bbe-a__ingredients-copy bbe-a__ingredients-copy--right">
+            {%- if section.settings.ingredients_tagline_2 != blank -%}
+              <p class="bbe-a__ingredients-tagline">{{ section.settings.ingredients_tagline_2 }}</p>
+            {%- endif -%}
+            <a href="{{ section.settings.ingredients_button_url | default: '#' }}" class="bbe-a__ingredients-btn">
+              {{- ingredients_button_text -}}
             </a>
-          {%- endif -%}
-        </div>
-        <div class="bbe-a__chips">
-          {%- for block in ingredient_chips offset: 2 limit: 2 -%}
-            <article class="bbe-a__chip" {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title }}</h3>
-              <p>{{ block.settings.body }}</p>
-            </article>
-          {%- endfor -%}
+          </div>
         </div>
       </div>
     </div>
@@ -545,7 +609,7 @@
   #shopify-section-{{ section.id }} .bbe-a__nav a{color:inherit;text-decoration:none;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);font-size:14px}
   #shopify-section-{{ section.id }} .bbe-a__hero{padding:34px 0 48px;background:linear-gradient(90deg,#f7efe2 0%,#d7bfa1 100%)}
   #shopify-section-{{ section.id }} .bbe-a__hero .bbe-a__shell{padding-inline:clamp(22px,5.7vw,112px)}
-  #shopify-section-{{ section.id }} .bbe-a__hero-shell{display:grid;gap:34px;align-items:center;margin-top:90px;margin-left:15px;}
+  #shopify-section-{{ section.id }} .bbe-a__hero-shell{display:grid;gap:34px;align-items:center;margin-left:15px;}
   #shopify-section-{{ section.id }} .bbe-a__hero-copy h1{margin:0 0 20px;font-family:var(--bbe-a-font-heading);font-weight:600;font-size:clamp(50px,8vw,79px);line-height:1.2}
   #shopify-section-{{ section.id }} .bbe-a__hero-sub{margin:0 0 26px;font-size:clamp(22px,3.2vw,34px);line-height:1.24}
   #shopify-section-{{ section.id }} .bbe-a__hero-bullets{margin-left:20px;padding:0;list-style:none;display:grid;gap:10px;font-size:clamp(24px,1.8vw,50px);line-height:1.15}
@@ -554,8 +618,8 @@
   #shopify-section-{{ section.id }} .bbe-a__hero-actions{margin-top:44px;display:flex;gap:18px;flex-wrap:wrap}
   #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn{width:100%;font-size:25px;line-height:1;white-space:nowrap}
   #shopify-section-{{ section.id }} .bbe-a__hero-media{position:relative;display:flex;align-items:flex-end;min-height:360px}
-  #shopify-section-{{ section.id }} .bbe-a__badge-wrap{position:absolute;top:8px;left:-20px;width:172px;height:172px;z-index:2}
-  #shopify-section-{{ section.id }} .bbe-a__badge-ring{position:absolute;inset:0;width:100%;height:100%}
+  #shopify-section-{{ section.id }} .bbe-a__badge-wrap{position:absolute;top:8px;left:-20px;width:172px;height:172px;z-index:2;overflow:visible}
+  #shopify-section-{{ section.id }} .bbe-a__badge-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
   #shopify-section-{{ section.id }} .bbe-a__badge-ring text{font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);font-size:11px;letter-spacing:1.4px;fill:#111}
   #shopify-section-{{ section.id }} .bbe-a__badge{position:absolute;inset:18px;width:136px;height:136px;border-radius:50%;background:#d9735c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:76px;line-height:1;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-regular)}
   #shopify-section-{{ section.id }} .bbe-a__hero-image{width:100%;height:auto;display:block}
@@ -591,37 +655,192 @@
   #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__viewport{padding-inline:0}
   #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__track{width:max-content;margin-inline:auto}
   #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__media{border-radius:26px}
-  #shopify-section-{{ section.id }} .bbe-a__before-after{padding:78px 0 0;background:{{ section.settings.before_after_background_color }}}
+  #shopify-section-{{ section.id }} .bbe-a__before-after{background:{{ section.settings.before_after_background_color }}}
   #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__title{margin:0 auto 20px;text-align:center;font-size:clamp(52px,5.4vw,104px);line-height:1.02}
   #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__sub{margin:0 auto 56px;max-width:1200px;text-align:center;font-family:var(--bbe-a-font-body);font-size:clamp(22px,2.4vw,52px);font-weight:var(--bbe-a-weight-regular);line-height:1.22}
   #shopify-section-{{ section.id }} .bbe-a__sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-  #shopify-section-{{ section.id }} .bbe-a__ba{position:relative;border-radius:38px 38px 0 0;overflow:hidden;aspect-ratio:1728/640;background:#ede5db;cursor:ew-resize;touch-action:none;user-select:none}
+  #shopify-section-{{ section.id }} .bbe-a__ba{position:relative;border-radius:38px;overflow:hidden;aspect-ratio:1728/640;background:#ede5db;cursor:ew-resize;touch-action:none;user-select:none}
   #shopify-section-{{ section.id }} .bbe-a__ba-pane{position:absolute;inset:0}
   #shopify-section-{{ section.id }} .bbe-a__ba-pane--after{clip-path:inset(0 0 0 50%)}
   #shopify-section-{{ section.id }} .bbe-a__ba-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
   #shopify-section-{{ section.id }} .bbe-a__ba-handle{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:74px;background:transparent;opacity:.98;cursor:ew-resize;touch-action:none;z-index:6}
   #shopify-section-{{ section.id }} .bbe-a__ba-handle-line{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:8px;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
-  #shopify-section-{{ section.id }} .bbe-a__ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:136px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.16)}
-  #shopify-section-{{ section.id }} .bbe-a__ba-knob-grip{width:18px;height:60px;background:
-    linear-gradient(#9d9d9d,#9d9d9d) left center/2px 60px no-repeat,
-    linear-gradient(#9d9d9d,#9d9d9d) center center/2px 60px no-repeat,
-    linear-gradient(#9d9d9d,#9d9d9d) right center/2px 60px no-repeat}
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:105px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+  #shopify-section-{{ section.id }} .bbe-a__ba-knob-grip{width:24px;height:67px;background:
+    linear-gradient(#9d9d9d,#9d9d9d) left center/2px 67px no-repeat,
+    linear-gradient(#9d9d9d,#9d9d9d) center center/2px 67px no-repeat,
+    linear-gradient(#9d9d9d,#9d9d9d) right center/2px 67px no-repeat}
   #shopify-section-{{ section.id }} .bbe-a__ba-handle-line,
   #shopify-section-{{ section.id }} .bbe-a__ba-knob,
   #shopify-section-{{ section.id }} .bbe-a__ba-knob-grip{pointer-events:none}
   #shopify-section-{{ section.id }} .bbe-a__ba-handle:focus-visible{outline:2px solid #111;outline-offset:3px}
   #shopify-section-{{ section.id }} .bbe-a__ba.is-dragging .bbe-a__ba-handle{opacity:1}
-  #shopify-section-{{ section.id }} .bbe-a__ingredients{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.ingredients_background_color }}}
-  #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{display:grid;gap:14px}
-  #shopify-section-{{ section.id }} .bbe-a__chips{display:grid;gap:10px}
-  #shopify-section-{{ section.id }} .bbe-a__chip{background:rgba(255,255,255,.72);border-radius:16px;padding:12px}
-  #shopify-section-{{ section.id }} .bbe-a__chip h3{margin:0}#shopify-section-{{ section.id }} .bbe-a__chip p{margin:6px 0 0;opacity:.82}
-  #shopify-section-{{ section.id }} .bbe-a__center{text-align:center}
-  #shopify-section-{{ section.id }} .bbe-a__ingredients-image{width:min(360px,70vw);display:block;margin:0 auto}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients{
+    --bbe-a-ingredients-product-size: {{ section.settings.ingredients_product_size }}px;
+    position:relative;
+    padding:0;
+    background:
+      {%- if section.settings.ingredients_background_image != blank -%}
+        url('{{ section.settings.ingredients_background_image | image_url: width: 2400 }}')
+          {{ section.settings.ingredients_background_image_position | default: 'center center' }} / cover no-repeat,
+      {%- endif -%}
+      radial-gradient(
+        95% 135% at 10% 50%,
+        rgba(255,255,255,0.34) 0%,
+        rgba(255,255,255,0.16) 24%,
+        rgba(255,255,255,0.06) 44%,
+        rgba(255,255,255,0.00) 68%
+      ),
+      linear-gradient(
+        90deg,
+        {{ section.settings.ingredients_background_color }} 0%,
+        {{ section.settings.ingredients_background_color | color_mix: section.settings.ingredients_gradient_end_color, 38 }} 30%,
+        {{ section.settings.ingredients_background_color | color_mix: section.settings.ingredients_gradient_end_color, 56 }} 56%,
+        {{ section.settings.ingredients_background_color | color_mix: section.settings.ingredients_gradient_end_color, 76 }} 78%,
+        {{ section.settings.ingredients_gradient_end_color }} 100%
+      );
+    overflow:hidden
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{
+    position:relative;
+    z-index:1;
+    width:min(1900px,100%);
+    min-height:560px
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-grid{
+    display:grid;
+    gap:16px;
+    min-height:560px;
+    align-content:center;
+    padding:24px clamp(16px,2vw,32px);
+    margin-top:-20px;
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-slot{min-width:0}
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip{
+    width:100%;
+    height:180px;
+    overflow:hidden;
+    border-radius:999px;
+    padding:10px 16px 10px 10px;
+    border:2px solid transparent;
+    background:
+      linear-gradient(to right,rgba(207,179,168,.82),rgba(225,207,183,.58)) padding-box,
+      linear-gradient(to right,transparent 10%,rgba(255,255,255,.80) 100%) border-box;
+    color:{{ section.settings.ingredients_chip_body_color }};
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:14px
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-icon{
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    overflow:hidden;
+    flex:0 0 96px;
+    display:block;
+    background:rgba(255,255,255,.34)
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-icon-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-copy{display:block}
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-title{
+    display:block;
+    margin:0 0 4px;
+    font-family:var(--bbe-a-font-body);
+    font-weight:var(--bbe-a-weight-semibold);
+    font-size:clamp(30px,2.2vw,62px);
+    line-height:1.04;
+    color:{{ section.settings.ingredients_chip_title_color }}
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-body{
+    display:block;
+    margin:0;
+    font-family:var(--bbe-a-font-body);
+    font-size:clamp(21px,1.5vw,44px);
+    line-height:1.12;
+    color:{{ section.settings.ingredients_chip_body_color }}
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-copy{display:grid;gap:10px}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--left{text-align:center}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--right{text-align:center;justify-items:center}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-heading{
+    margin:0 75px 0 0;
+    font-family:var(--bbe-a-font-heading);
+    font-weight:600;
+    font-size:clamp(62px,6vw,80px);
+    line-height:.94;
+    color:{{ section.settings.ingredients_heading_color }}
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-tagline{
+    margin:0 0 0 10px;
+    font-family:var(--bbe-a-font-body);
+    font-weight:var(--bbe-a-weight-regular);
+    font-size:clamp(28px,1.66vw,56px);
+    line-height:1.1;
+    color:{{ section.settings.ingredients_text_color }}
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-center{
+    position:relative;
+    display:grid;
+    place-items:center;
+    min-height:280px;
+    padding:10px 0;
+    z-index:6
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-ring{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:min(560px,calc(100vw - 40px));
+    height:min(560px,calc(100vw - 40px));
+    display:block;
+    pointer-events:none;
+    z-index:7
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-ring circle{fill:none;stroke:{{ section.settings.ingredients_ring_color }};stroke-width:1}
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-product{
+    position:relative;
+    z-index:8;
+    width:min(var(--bbe-a-ingredients-product-size, 320px), 80vw)
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-image{
+    width:100%;
+    height:auto;
+    display:block;
+    object-fit:contain
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:80px;
+    padding:14px 30px;
+    border-radius:999px;
+    border:2px solid {{ section.settings.ingredients_button_border_color }};
+    background:{{ section.settings.ingredients_button_background_color }};
+    color:{{ section.settings.ingredients_button_text_color }};
+    text-decoration:none;
+    text-transform:uppercase;
+    font-family:var(--bbe-a-font-body);
+    font-weight:var(--bbe-a-weight-semibold);
+    font-size:clamp(20px,1.35vw,36px);
+    line-height:1;
+    letter-spacing:.01em
+  }
+  #shopify-section-{{ section.id }} .bbe-a__ingredients-btn:hover{opacity:.9}
   #shopify-section-{{ section.id }} .bbe-a__testi{position:relative;width:280px;aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:#ede5db}
   #shopify-section-{{ section.id }} .bbe-a__testi-img,#shopify-section-{{ section.id }} .bbe-a__testi-video{width:100%;height:100%;object-fit:cover;display:block}
   #shopify-section-{{ section.id }} .bbe-a__play{position:absolute;inset:0;margin:auto;width:50px;height:50px;border-radius:50%;border:none;background:rgba(255,255,255,.9)}
   #shopify-section-{{ section.id }} .bbe-a__cap{margin:8px 0 0;text-align:center;opacity:.76}
+  #shopify-section-{{ section.id }} [data-a-testimonials] .bbe-a__title{text-align:center;margin-bottom:44px}
+  #shopify-section-{{ section.id }} [data-a-testimonials]{background:#fff}
+  #shopify-section-{{ section.id }} [data-a-testimonials] .bbe-a__actions{display:none}
   #shopify-section-{{ section.id }} .bbe-a__faq{padding:{{ section.settings.content_padding_y }}px 0;background:{{ section.settings.faq_background_color }}}
   #shopify-section-{{ section.id }} .bbe-a__faq-shell{display:grid;gap:0}
   #shopify-section-{{ section.id }} .bbe-a__faq-img{width:100%;height:100%;object-fit:cover;display:block}
@@ -637,7 +856,9 @@
     #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn{width:auto}
     #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn--primary{min-width:370px;height:80px;padding-inline:34px}
     #shopify-section-{{ section.id }} .bbe-a__hero-actions .bbe-a__btn--secondary{min-width:345px;height:80px;padding-inline:34px}
-    #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{grid-template-columns:1fr minmax(280px,360px) 1fr;align-items:center}
+    #shopify-section-{{ section.id }} .bbe-a__ingredient-chip{min-height:138px;padding:12px 18px 12px 12px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-icon{width:116px;height:116px;flex-basis:116px;margin-left:15px;}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-btn{height:80px;padding-inline:42px}
     #shopify-section-{{ section.id }} .bbe-a__faq-shell,#shopify-section-{{ section.id }} .bbe-a__founder-shell{grid-template-columns:1fr 1fr}
   }
   @media(min-width:990px){
@@ -650,8 +871,47 @@
     #shopify-section-{{ section.id }} .bbe-a__hero-image{height:684px;object-fit:cover;object-position:center center}
     #shopify-section-{{ section.id }} .bbe-a__badge-wrap{top:26px;left:-34px}
     #shopify-section-{{ section.id }} [data-a-ugc] .bbe-a__track{justify-content:center}
-    #shopify-section-{{ section.id }} .bbe-a__before-after{padding-top:96px}
+    #shopify-section-{{ section.id }} [data-a-testimonials-viewport]{margin-inline:calc(-1 * clamp(16px,2vw,32px));padding-left:104px;padding-right:90px}
+    #shopify-section-{{ section.id }} [data-a-testimonials-viewport] .bbe-a__track{gap:25px}
+    #shopify-section-{{ section.id }} [data-a-testimonials-viewport] .bbe-a__testi{width:clamp(160px,calc((100vw - 194px - 6 * 25px) / 7),225px);height:395px;aspect-ratio:auto}
     #shopify-section-{{ section.id }} .bbe-a__before-after .bbe-a__sub{margin-bottom:68px}
+    #shopify-section-{{ section.id }} .bbe-a__ba{height:820px;min-height:820px;aspect-ratio:auto;margin-bottom:90px;}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-grid{
+      grid-template-columns:minmax(0,1fr) minmax(220px,240px) minmax(0,1fr);
+      grid-template-rows:180px auto 180px;
+      grid-template-areas:
+        'top-left center top-right'
+        'left-copy center right-copy'
+        'bottom-left center bottom-right';
+      column-gap:clamp(20px,3.5vw,70px);
+      row-gap:30px;
+      align-items:center;
+      min-height:860px;
+      padding:0 clamp(16px,2vw,24px)
+    }
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-shell{min-height:860px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-slot--top-left{grid-area:top-left;width:min(680px,100%);margin-top:-40px;margin-left:80px;margin-right:0px;transform:translateY(-10px)}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-slot--top-right{grid-area:top-right;width:min(680px,100%);margin-left:-45px;margin-top:-40px;transform:translateY(-10px)}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-slot--bottom-left{grid-area:bottom-left;width:min(680px,100%);margin-top:60px;margin-left:80px;margin-right:0px;transform:translateY(10px)}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-slot--bottom-right{grid-area:bottom-right;width:min(680px,100%);margin-top:60px;margin-left:-45px;margin-right:0px;transform:translateY(10px)}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--left{grid-row:2;grid-column:1/3;text-align:center;z-index:1;pointer-events:none;margin-bottom: 20px;margin-right: 10px;}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--left *{pointer-events:auto;margin-top:10px;}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--right{grid-row:2;grid-column:3/4;justify-items:start;text-align:left;gap:20px;z-index:1;pointer-events:none;margin-left:-35px;}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-copy--right *{pointer-events:auto}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-tagline--left{margin-left:105px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-center{grid-area:center;min-height:620px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-ring{width:570px;height:570px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-product{width:var(--bbe-a-ingredients-product-size, 320px)}
+    #shopify-section-{{ section.id }} .bbe-a__ingredients-btn{min-width:420px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredient-chip{width:min(680px,100%);height:210px;padding:14px 30px 14px 14px}
+    #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-icon{width:136px;height:136px;flex-basis:136px}
+  }
+  @media(min-width:1700px){
+    #shopify-section-{{ section.id }} .bbe-a__ingredient-chip-icon{
+      width:165px;
+      height:165px;
+      flex-basis:165px
+    }
   }
 </style>
 
@@ -776,7 +1036,10 @@
         var beforePct = Math.round(pct);
         var afterPct = 100 - beforePct;
         handle.setAttribute('aria-valuenow', beforePct);
-        handle.setAttribute('aria-valuetext', beforeLabel + ' ' + beforePct + '%, ' + afterLabel + ' ' + afterPct + '%');
+        handle.setAttribute(
+          'aria-valuetext',
+          beforeLabel + ' ' + beforePct + '%, ' + afterLabel + ' ' + afterPct + '%'
+        );
       }
       function setPos(pct) {
         pos = clamp(pct, 0, 100);
@@ -804,7 +1067,8 @@
       }
       function stopDrag(event) {
         if (!dragging) return;
-        if (event && activePointerId !== null && event.pointerId !== undefined && event.pointerId !== activePointerId) return;
+        if (event && activePointerId !== null && event.pointerId !== undefined && event.pointerId !== activePointerId)
+          return;
         if (slider.releasePointerCapture && activePointerId !== null) {
           try {
             slider.releasePointerCapture(activePointerId);
@@ -1371,7 +1635,35 @@
       "type": "color",
       "id": "ingredients_background_color",
       "label": "Ingredients background",
-      "default": "#f0e5d0"
+      "default": "#e5d6c3"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_gradient_end_color",
+      "label": "Ingredients gradient end color",
+      "default": "#af9270"
+    },
+    {
+      "type": "image_picker",
+      "id": "ingredients_background_image",
+      "label": "Ingredients background image"
+    },
+    {
+      "type": "select",
+      "id": "ingredients_background_image_position",
+      "label": "Ingredients background image position",
+      "default": "center center",
+      "options": [
+        { "value": "left top", "label": "Left top" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "right top", "label": "Right top" },
+        { "value": "left center", "label": "Left center" },
+        { "value": "center center", "label": "Center center" },
+        { "value": "right center", "label": "Right center" },
+        { "value": "left bottom", "label": "Left bottom" },
+        { "value": "center bottom", "label": "Center bottom" },
+        { "value": "right bottom", "label": "Right bottom" }
+      ]
     },
     {
       "type": "text",
@@ -1383,6 +1675,16 @@
       "type": "image_picker",
       "id": "ingredients_product_image",
       "label": "Ingredients product image"
+    },
+    {
+      "type": "range",
+      "id": "ingredients_product_size",
+      "label": "Ingredients product size",
+      "min": 180,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 330
     },
     {
       "type": "text",
@@ -1397,6 +1699,48 @@
       "default": "No synthetic antibacterials."
     },
     {
+      "type": "color",
+      "id": "ingredients_heading_color",
+      "label": "Ingredients heading color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_text_color",
+      "label": "Ingredients text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_ring_color",
+      "label": "Ingredients ring color",
+      "default": "#efe6d8"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_chip_background_color",
+      "label": "Ingredient chip background",
+      "default": "#ddc8c1"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_chip_border_color",
+      "label": "Ingredient chip border color",
+      "default": "#f5efe4"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_chip_title_color",
+      "label": "Ingredient chip title color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_chip_body_color",
+      "label": "Ingredient chip body color",
+      "default": "#111111"
+    },
+    {
       "type": "text",
       "id": "ingredients_button_text",
       "label": "Ingredients button text",
@@ -1406,6 +1750,24 @@
       "type": "url",
       "id": "ingredients_button_url",
       "label": "Ingredients button URL"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_button_background_color",
+      "label": "Ingredients button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_button_text_color",
+      "label": "Ingredients button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "ingredients_button_border_color",
+      "label": "Ingredients button border color",
+      "default": "#000000"
     },
     {
       "type": "header",
@@ -1536,10 +1898,12 @@
     {
       "type": "ingredient_chip",
       "name": "Ingredient chip",
-      "limit": 8,
+      "limit": 4,
       "settings": [
         { "type": "text", "id": "title", "label": "Title", "default": "Ingredient name" },
-        { "type": "textarea", "id": "body", "label": "Body", "default": "Ingredient benefit text." }
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Ingredient benefit text." },
+        { "type": "image_picker", "id": "icon", "label": "Icon image" },
+        { "type": "url", "id": "link_url", "label": "Optional link URL" }
       ]
     },
     {

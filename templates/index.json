@@ -120,28 +120,36 @@
           "type": "ingredient_chip",
           "settings": {
             "title": "Orange Peel Oil",
-            "body": "Natural fragrance and skin-brightening properties."
+            "body": "Fresh, antibacterial support.",
+            "icon": "shopify://shop_images/ChatGPT_Image_9_mar_2026_19_12_41.webp",
+            "link_url": ""
           }
         },
         "ingredient_2": {
           "type": "ingredient_chip",
           "settings": {
             "title": "White Tea Extract",
-            "body": "Rich in antioxidants to protect and nourish."
+            "body": "Protects and soothes.",
+            "icon": "shopify://shop_images/ChatGPT_Image_9_mar_2026_19_13_57.webp",
+            "link_url": ""
           }
         },
         "ingredient_3": {
           "type": "ingredient_chip",
           "settings": {
             "title": "Magnesium Hydroxide",
-            "body": "Neutralizes odor without blocking your pores."
+            "body": "Neutralizes odor naturally.",
+            "icon": "shopify://shop_images/ChatGPT_Image_9_mar_2026_19_14_08.webp",
+            "link_url": ""
           }
         },
         "ingredient_4": {
           "type": "ingredient_chip",
           "settings": {
             "title": "Shea Butter",
-            "body": "Deeply moisturizing for soft, smooth skin."
+            "body": "Nourishes and softens.",
+            "icon": "shopify://shop_images/ChatGPT_Image_9_mar_2026_19_15_26.webp",
+            "link_url": ""
           }
         },
         "testimonial_1": {
@@ -276,12 +284,26 @@
         "before_after_after_image": "shopify://shop_images/ChatGPT_Image_9_mar_2026_09_39_15.png",
         "before_after_before_label": "Before",
         "before_after_after_label": "After",
-        "ingredients_background_color": "#f0e5d0",
+        "ingredients_background_color": "#e5d6c3",
+        "ingredients_gradient_end_color": "#af9270",
+        "ingredients_background_image_position": "center center",
         "ingredients_heading": "Clean Ingredients",
+        "ingredients_product_image": "shopify://shop_images/deodorant-feel-good-citrus.webp",
+        "ingredients_product_size": 300,
         "ingredients_tagline_1": "No aluminum. No parabens.",
         "ingredients_tagline_2": "No synthetic antibacterials.",
-        "ingredients_button_text": "See full ingredients",
+        "ingredients_heading_color": "#111111",
+        "ingredients_text_color": "#111111",
+        "ingredients_ring_color": "#efe6d8",
+        "ingredients_chip_background_color": "#ddc8c1",
+        "ingredients_chip_border_color": "#f5efe4",
+        "ingredients_chip_title_color": "#111111",
+        "ingredients_chip_body_color": "#111111",
+        "ingredients_button_text": "SEE FULL INGREDIENTS",
         "ingredients_button_url": "",
+        "ingredients_button_background_color": "#000000",
+        "ingredients_button_text_color": "#ffffff",
+        "ingredients_button_border_color": "#000000",
         "testimonials_heading": "What They Are Saying",
         "testimonials_show_arrows_desktop": true,
         "faq_background_color": "#ffffff",

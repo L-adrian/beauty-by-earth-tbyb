@@ -155,28 +155,49 @@
         "testimonial_1": {
           "type": "testimonial_tile",
           "settings": {
-            "video_url": "",
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434483.mp4",
             "caption": ""
           }
         },
         "testimonial_2": {
           "type": "testimonial_tile",
           "settings": {
-            "video_url": "",
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434486.mp4",
             "caption": ""
           }
         },
         "testimonial_3": {
           "type": "testimonial_tile",
           "settings": {
-            "video_url": "",
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434485.mp4",
             "caption": ""
           }
         },
         "testimonial_4": {
           "type": "testimonial_tile",
           "settings": {
-            "video_url": "",
+            "video": "shopify://files/videos/@Liz_Self_Tanner_Mousse_BILLO_9x16.mp4",
+            "caption": ""
+          }
+        },
+        "testimonial_tile_e9kVT7": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434484.mp4",
+            "caption": ""
+          }
+        },
+        "testimonial_tile_qkNYdM": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434483.mp4",
+            "caption": ""
+          }
+        },
+        "testimonial_tile_PUikBV": {
+          "type": "testimonial_tile",
+          "settings": {
+            "video": "shopify://files/videos/Beauty_by_Earth_video_original_434486.mp4",
             "caption": ""
           }
         },
@@ -224,6 +245,9 @@
         "testimonial_2",
         "testimonial_3",
         "testimonial_4",
+        "testimonial_tile_e9kVT7",
+        "testimonial_tile_qkNYdM",
+        "testimonial_tile_PUikBV",
         "faq_1",
         "faq_2",
         "faq_3"
@@ -232,7 +256,7 @@
       "settings": {
         "section_max_width": 1900,
         "content_padding_y": 124,
-        "background_color": "#f2e7d3",
+        "background_color": "#ffffff",
         "text_color": "#111111",
         "button_style": "solid",
         "show_promo_bar": true,
@@ -246,7 +270,10 @@
         "show_faq": true,
         "show_founder": true,
         "promo_color_scheme": "dark",
-        "header_logo_width": 120,
+        "promo_label_font_size": 24,
+        "promo_text_font_size": 24,
+        "header_logo": "shopify://shop_images/horizontal-logo-no-bar-bbe-MANUELA-blk-white-background.jpg",
+        "header_logo_width": 260,
         "header_nav_link_1_text": "SHOP ALL",
         "header_nav_link_1_url": "",
         "header_nav_link_2_text": "BEST SELLERS",
@@ -259,7 +286,7 @@
         "hero_primary_cta_url": "",
         "hero_secondary_cta_text": "SEE HOW IT WORKS",
         "hero_secondary_cta_url": "",
-        "hero_media_image": "shopify://shop_images/background-IA.png",
+        "hero_media_image": "",
         "hero_show_badge": true,
         "hero_badge_line": "Get our 2-pack today for $0.",
         "hero_badge_highlight": "$0",
@@ -274,10 +301,10 @@
         "reviews_verified_label": "VERIFIED PURCHASE",
         "reviews_autoplay": true,
         "reviews_autoplay_seconds": 4,
-        "ugc_background_color": "#ebebeb",
+        "ugc_background_color": "#ffffff",
         "ugc_gap": 14,
         "ugc_show_arrows_desktop": false,
-        "before_after_background_color": "#efefef",
+        "before_after_background_color": "#ffffff",
         "before_after_heading": "See The Difference",
         "before_after_subheading": "More hydration, neutralized odors, and better for the planet.",
         "before_after_before_image": "shopify://shop_images/new-magnesium-deodorants-2025-JENNY-JJR_0159.webp",
@@ -308,11 +335,13 @@
         "testimonials_show_arrows_desktop": true,
         "faq_background_color": "#ffffff",
         "faq_heading": "Still have questions?",
+        "faq_image": "shopify://shop_images/Magnesium-Deodorant_HandsHoldingDeodorants_JENNY_ColorblockModelProductStyledModelInHandPackagingFamilyFullProductLineHighProductionStudioShot-1L4A5872.jpg_1.webp",
         "faq_single_open": true,
         "founder_background_color": "#ece3d4",
-        "founder_heading": "Fresh that actually works",
-        "founder_body": "<p>I created this formula because I was tired of choosing between products that worked and products that were good for my body. You deserve both.</p>",
-        "founder_name": "- Sarah, Founder"
+        "founder_heading": "Fresh That Actually Works",
+        "founder_body": "<p>I created this deodorant because I was tired of choosing between “natural” and effective. Our magnesium formula neutralizes odor at the source, without aluminum or harsh ingredients. That’s why we made it risk-free. Try it for 7 days. If you don’t love it, cancel before day 7, <strong>no charge.</strong></p><p><strong>I’m confident you’ll feel the difference.</strong></p>",
+        "founder_name": "Prudence M. | Founder",
+        "founder_image": "shopify://shop_images/Self-Tanner-Tanning-Lotion_WomanHoldingTube_JENNY_UGCModelModelInHandHighProductionStudioShot-IMG_1787_jpg.jpg"
       }
     }
   },

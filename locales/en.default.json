@@ -423,7 +423,8 @@
       "name": "What they are saying"
     },
     "faq": {
-      "name": "FAQ accordion"
+      "name": "FAQ accordion",
+      "default_answer": "Answer coming soon."
     },
     "founder": {
       "name": "Founder note"

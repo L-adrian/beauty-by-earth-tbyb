@@ -1,4 +1,4 @@
-﻿{%- assign promo_blocks = section.blocks | where: 'type', 'promo_message' -%}
+{%- assign promo_blocks = section.blocks | where: 'type', 'promo_message' -%}
 {%- assign hero_bullets = section.blocks | where: 'type', 'hero_bullet' -%}
 {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
 {%- assign ugc_tiles = section.blocks | where: 'type', 'ugc_tile' -%}
@@ -9,7 +9,6 @@
 {%- if hero_headline contains 'Love It. Or' -%}
   {%- assign hero_headline = hero_headline | replace: 'Love It. Or', 'Love It.<br>Or' -%}
 {%- endif -%}
-
 <section
   id="bbe-assessment-{{ section.id }}"
   class="bbe-a bbe-a--{{ section.settings.button_style }}"
@@ -619,7 +618,7 @@
   #shopify-section-{{ section.id }} .bbe-a__shell{width:min({{ section.settings.section_max_width }}px,100%);margin:0 auto;padding:0 clamp(16px,2vw,32px)}
   #shopify-section-{{ section.id }} .bbe-a__title{margin:0 0 18px;font-family:var(--bbe-a-font-heading);font-weight:600;font-size:clamp(32px,5vw,80px)}
   #shopify-section-{{ section.id }} .bbe-a__btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 22px;border-radius:999px;border:2px solid #111;text-transform:uppercase;font-family:var(--bbe-a-font-body);font-weight:var(--bbe-a-weight-semibold);text-decoration:none;color:#111;background:transparent}
-  #shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--primary,#shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--header{background:#111;color:#fff;border-color:#111}
+  #shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--primary,#shopify-section-{{ section.id }} .bbe-a--solid .bbe-a__btn--header{background:#d9735c;color:#fff;border-color:#d9735c}
   #shopify-section-{{ section.id }} .bbe-a__promo{padding:12px 0 10px}
   #shopify-section-{{ section.id }} .bbe-a__promo--dark{background:#111;color:#fff}
   #shopify-section-{{ section.id }} .bbe-a__promo--light{background:#fff;color:#111}

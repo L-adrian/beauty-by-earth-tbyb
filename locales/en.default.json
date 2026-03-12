@@ -420,7 +420,10 @@
       "name": "Clean ingredients"
     },
     "testimonials": {
-      "name": "What they are saying"
+      "name": "What they are saying",
+      "play_video": "Play video",
+      "unmute": "Unmute",
+      "mute": "Mute"
     },
     "faq": {
       "name": "FAQ accordion",

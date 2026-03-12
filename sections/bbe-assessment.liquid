@@ -498,7 +498,13 @@
                   {%- if block.settings.video != blank -%}
                     {{-
                       block.settings.video
-                      | video_tag: image_size: '450x', loop: true, muted: true, class: 'bbe-a__testi-video'
+                      | video_tag:
+                        image_size: '450x',
+                        loop: true,
+                        muted: true,
+                        preload: 'none',
+                        playsinline: true,
+                        class: 'bbe-a__testi-video'
                     -}}
                     <button type="button" data-a-play-btn class="bbe-a__play" aria-label="Play video">&#9658;</button>
                     <button type="button" data-a-mute-btn class="bbe-a__mute" aria-label="Unmute">&#128263;</button>
@@ -538,8 +544,13 @@
           {%- if section.settings.faq_image != blank -%}
             {{
               section.settings.faq_image
-              | image_url: width: 1400
-              | image_tag: loading: 'lazy', alt: section.settings.faq_heading, class: 'bbe-a__faq-img'
+              | image_url: width: 2000
+              | image_tag:
+                widths: '480,720,960,1200,1600,2000',
+                sizes: '(max-width: 989px) 100vw, 50vw',
+                loading: 'lazy',
+                alt: section.settings.faq_heading,
+                class: 'bbe-a__faq-img'
             }}
           {%- endif -%}
         </div>
@@ -592,8 +603,13 @@
           {%- if section.settings.founder_image != blank -%}
             {{
               section.settings.founder_image
-              | image_url: width: 1200
-              | image_tag: loading: 'lazy', alt: section.settings.founder_name, class: 'bbe-a__founder-img'
+              | image_url: width: 2000
+              | image_tag:
+                widths: '480,720,960,1200,1600,2000',
+                sizes: '(max-width: 989px) 100vw, 50vw',
+                loading: 'lazy',
+                alt: section.settings.founder_name,
+                class: 'bbe-a__founder-img'
             }}
           {%- endif -%}
         </div>
@@ -673,7 +689,17 @@
   }
   {%- if section.settings.hero_media_image != blank -%}
     #shopify-section-{{ section.id }} .bbe-a__hero{
-      background-image:url('{{ section.settings.hero_media_image | image_url: width: 2400 }}');
+      background-image:url('{{ section.settings.hero_media_image | image_url: width: 900 }}');
+    }
+    @media(min-width:750px){
+      #shopify-section-{{ section.id }} .bbe-a__hero{
+        background-image:url('{{ section.settings.hero_media_image | image_url: width: 1500 }}');
+      }
+    }
+    @media(min-width:1200px){
+      #shopify-section-{{ section.id }} .bbe-a__hero{
+        background-image:url('{{ section.settings.hero_media_image | image_url: width: 2400 }}');
+      }
     }
   {%- endif -%}
   #shopify-section-{{ section.id }} .bbe-a__hero .bbe-a__shell{padding-inline:clamp(22px,5.7vw,112px)}
@@ -794,7 +820,7 @@
     padding:0;
     background:
       {%- if section.settings.ingredients_background_image != blank -%}
-        url('{{ section.settings.ingredients_background_image | image_url: width: 2400 }}')
+        url('{{ section.settings.ingredients_background_image | image_url: width: 1600 }}')
           {{ section.settings.ingredients_background_image_position | default: 'center center' }} / cover no-repeat,
       {%- endif -%}
       radial-gradient(

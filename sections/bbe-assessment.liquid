@@ -34,7 +34,10 @@
   {%- endif -%}
 
   {%- if section.settings.show_header_row -%}
-    <header class="bbe-a__header">
+    <header
+      class="bbe-a__header{% if section.settings.enable_sticky_header %} is-sticky-enabled{% endif %}"
+      data-sticky-enabled="{{ section.settings.enable_sticky_header }}"
+    >
       <div class="bbe-a__shell bbe-a__header-shell">
         <div class="bbe-a__header-left">
           <button type="button" class="bbe-a__hamburger" aria-label="Menu" aria-expanded="false">
@@ -631,7 +634,7 @@
     font-weight: var(--bbe-a-weight-regular);
     color:{{ section.settings.text_color }};
     background:{{ section.settings.background_color }};
-    overflow:hidden
+    overflow:visible
   }
   #shopify-section-{{ section.id }} .bbe-a__shell{width:min({{ section.settings.section_max_width }}px,100%);margin:0 auto;padding:0 clamp(16px,2vw,32px)}
   #shopify-section-{{ section.id }} .bbe-a__title{margin:0 0 18px;font-family:var(--bbe-a-font-heading);font-weight:600;font-size:clamp(32px,5vw,80px)}
@@ -669,14 +672,16 @@
     font-size:{{ section.settings.promo_text_font_size }}px
   }
   #shopify-section-{{ section.id }} .bbe-a__header{
-    position:sticky;
-    top:0;
-    z-index:40;
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,1);
     border-bottom:1px solid rgba(0,0,0,.08);
     backdrop-filter:blur(16px);
     -webkit-backdrop-filter:blur(16px);
     transition:background-color .24s ease,border-color .24s ease,box-shadow .24s ease
+  }
+  #shopify-section-{{ section.id }} .bbe-a__header.is-sticky-enabled{
+    position:sticky;
+    top:0;
+    z-index:40
   }
   #shopify-section-{{ section.id }} .bbe-a__header.is-scrolled{
     background:rgba(245,236,224,.96);
@@ -2462,6 +2467,10 @@
     function initStickyHeader() {
       var header = section.querySelector('.bbe-a__header');
       if (!header) return;
+      if (header.getAttribute('data-sticky-enabled') !== 'true') {
+        header.classList.remove('is-scrolled');
+        return;
+      }
 
       function syncHeaderState() {
         header.classList.toggle('is-scrolled', window.scrollY > 12);
@@ -2688,6 +2697,12 @@
       "type": "checkbox",
       "id": "show_header_row",
       "label": "Show header row",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
       "default": true
     },
     {
